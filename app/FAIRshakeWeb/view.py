@@ -16,24 +16,35 @@ def index(repository: RepositoryAPI):
 def projects(repository: RepositoryAPI):
   return render_template('projects.html',
     projects=repository.get(limit=10),
+    current_user={},
   )
 
 @app.route('/start_project', methods=['GET'])
 def start_project():
-  return render_template('start_project.html')
+  return render_template('start_project.html',
+    current_user={},
+  )
 
 @app.route('/bookmarklet', methods=['GET'])
 def bookmarklet():
-  return render_template('bookmarklet.html')
+  return render_template('bookmarklet.html',
+    current_user={},
+  )
 
 @app.route('/chrome_extension', methods=['GET'])
 def chrome_extension():
-  return render_template('chrome_extension.html')
+  return render_template('chrome_extension.html',
+    current_user={},
+  )
 
 @app.route('/register', methods=['GET'])
 def register():
-  return render_template('register.html')
+  return render_template('register.html',
+    current_user={},
+  )
 
 @app.route('/login', methods=['GET'])
 def login():
-  return render_template('login.html')
+  return render_template('login.html',
+    current_user={},
+  )
