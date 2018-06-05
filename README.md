@@ -9,3 +9,15 @@ A web interface for the scoring of biomedical digital objects by user evaluation
   - `util`: Application-independent utility functions for code-reuse
 - `tests`: Nose tests for verifying entities properly implement their interface and general app functionality.
   - `test_util`: Nose tests for verifying that utilities work as anticipated.
+
+## Development
+
+### Setting up environment
+Minimum python version of 3.7.
+Install dependencies with `pip install -r requirements.txt`.
+
+### Run FAIRshakeWeb server
+`python run.py`
+
+### Run Application Tests
+`nosetests`
