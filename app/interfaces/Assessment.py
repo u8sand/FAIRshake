@@ -84,12 +84,12 @@ class AssessmentAPI:
     Assessment: {AssessmentModel}
   '''
   def get(
-      id: Optional[UUID],
-      object: Optional[UUID],
-      rubric: Optional[UUID],
-      timestamp: Optional[Timestamp],
-      skip: Optional[int],
-      limit: Optional[int],
+      id: Optional[UUID] = None,
+      object: Optional[UUID] = None,
+      rubric: Optional[UUID] = None,
+      timestamp: Optional[Timestamp] = None,
+      skip: Optional[int] = None,
+      limit: Optional[int] = None,
     ) -> HTTPResponse[AssessmentModel]:
     '''
     summary: Query assessments for a given digital object

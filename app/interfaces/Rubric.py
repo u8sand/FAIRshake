@@ -88,10 +88,10 @@ class RubricAPI:
   '''
 
   def get(
-      id: Optional[UUID],
-      timestamp: Optional[Timestamp],
-      skip: Optional[int],
-      limit: Optional[int],
+      id: Optional[UUID] = None,
+      timestamp: Optional[Timestamp] = None,
+      skip: Optional[int] = None,
+      limit: Optional[int] = None,
     ) -> HTTPResponse[RubricModel]:
     '''
     summary: Query rubrics

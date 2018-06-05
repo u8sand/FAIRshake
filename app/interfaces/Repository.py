@@ -72,14 +72,14 @@ class RepositoryAPI:
       {DigitalObjectModel}
   '''
   def get(
-      id: Optional[UUID],
-      tag: Optional[List[str]],
-      user: Optional[UUID],
-      name: Optional[str],
-      url: Optional[str],
-      timestamp: Optional[Timestamp],
-      skip: Optional[int],
-      limit: Optional[int],
+      id: Optional[UUID] = None,
+      tag: Optional[List[str]] = None,
+      user: Optional[UUID] = None,
+      name: Optional[str] = None,
+      url: Optional[str] = None,
+      timestamp: Optional[Timestamp] = None,
+      skip: Optional[int] = None,
+      limit: Optional[int] = None,
     ) -> HTTPResponse[DigitalObjectModel]:
     '''
     summary: Query for digital objects
