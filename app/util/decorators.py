@@ -4,7 +4,7 @@ def model(mod):
   ''' A decorator for model registration.
   '''
   assert mod.__doc__, '%s does not have a docstring' % (mod)
-  return dataclass(model)
+  return dataclass(mod)
 
 def interface(iface):
   ''' A decorator for interface registration.
