@@ -1,0 +1,127 @@
+definitions:
+  Assessment:
+    description: An evaluation on a digital object based on a rubric
+    properties:
+      criteria:
+        items:
+          $ref: '#/definitions/Criterion'
+        type: array
+      id:
+        description: ID of evaluation
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+      rubric:
+        description: ID of rubric used to make this evaluation
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+      timestamp:
+        description: When the evaluation was made
+        example: '2018-05-20T15:59:59-08:00'
+        format: dateTime
+        type: string
+      user:
+        description: ID of user who made the evaluation
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+    type: object
+  Criterion:
+    properties:
+      name:
+        description: Criterion being evaluated
+        example: Coolness
+        type: string
+      value:
+        description: Value of the criterion (of rubric-defined type)
+        example: 0.8
+        type: string
+    type: object
+info:
+  contact:
+    email: daniel.clarke@mssm.edu
+  description: A generic FAIRshake Assessment REST API for performing and storing
+    manual assessments.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: FAIRshakeAssessment
+  version: 1.0.0
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Unique assessment identifier
+        format: uuid
+        in: query
+        name: id
+        type: string
+      - description: Unique object identifier
+        format: uuid
+        in: query
+        name: object
+        type: string
+      - description: Unique rubric identifier
+        format: uuid
+        in: query
+        name: rubric
+        type: string
+      - description: Updated at least since timestamp
+        format: dateTime
+        in: query
+        name: timestamp
+        type: string
+      - description: Start index for limited results
+        in: query
+        name: skip
+        type: number
+      - description: Limit number of results
+        in: query
+        name: limit
+        type: number
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Assessments as json
+          schema:
+            items:
+              $ref: '#/definitions/Assessment'
+            type: array
+        404:
+          description: Assessments not found
+      summary: Query assessments for a given digital object
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/Assessment'
+      produces:
+      - application/json
+      responses:
+        201:
+          description: Assessment successfully made
+        400:
+          description: Parameters invalid
+        401:
+          description: Something else went wrong
+        500:
+          description: Permission denied, not authenticated
+      security:
+      - ApiKeyAuth: []
+      summary: Submit assessment for a given digital object with a given rubric
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-API-Key
+    type: apiKey
+swagger: '2.0'
+

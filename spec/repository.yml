@@ -1,0 +1,133 @@
+definitions:
+  DigitalObject:
+    properties:
+      description:
+        example: My tool is widely used.
+        type: string
+      id:
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+      image:
+        example: http://mytool.com/logo.png
+        type: string
+      name:
+        example: MyTool
+        type: string
+      tags:
+        items:
+          example: tool
+          type: string
+        type: array
+      timestamp:
+        description: Last updated
+        example: '2018-05-20T15:59:59-08:00'
+        format: dateTime
+        type: string
+      url:
+        example: https://mytool.com/
+        type: string
+      user:
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+    required:
+    - name
+    - url
+    type: object
+info:
+  contact:
+    email: daniel.clarke@mssm.edu
+  description: A generic FAIR Repository REST API for storing information about digital
+    objects.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: FAIRshakeRepository
+  version: 1.0.0
+paths:
+  /:
+    get:
+      parameters:
+      - description: Unique object identifier
+        format: uuid
+        in: query
+        name: id
+        type: string
+      - description: Digital object tags
+        in: query
+        items:
+          type: string
+        name: tag
+        type: array
+      - description: User id association
+        format: uuid
+        in: query
+        name: user
+        type: string
+      - description: Name of the digital object
+        in: query
+        name: name
+        type: string
+      - description: URL of the digital object
+        in: query
+        name: url
+        type: string
+      - description: Updated at least since timestamp
+        format: dateTime
+        in: query
+        name: timestamp
+        type: string
+      - description: Start index for limited results
+        in: query
+        name: skip
+        type: number
+      - description: Limit number of results
+        in: query
+        name: limit
+        type: number
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Multiple data objects matching query
+          schema:
+            items:
+              $ref: '#/definitions/DigitalObject'
+            type: array
+        400:
+          description: Query types are invalid
+        404:
+          description: No data object matching this query
+        500:
+          description: Permission denied, not authenticated
+      summary: Query for digital objects
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/DigitalObject'
+      produces:
+      - application/json
+      responses:
+        201:
+          description: Digital object successfully registered
+        400:
+          description: Digital object invalid
+        500:
+          description: Permission denied, not authenticated
+      security:
+      - ApiKeyAuth: []
+      summary: Add or update digital object in the repository
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-API-Key
+    type: apiKey
+swagger: '2.0'
+
