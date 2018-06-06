@@ -11,6 +11,9 @@ definitions:
       image:
         example: http://mytool.com/logo.png
         type: string
+      license:
+        example: Apache-2.0
+        type: string
       name:
         example: MyTool
         type: string
@@ -32,7 +35,7 @@ definitions:
         format: uuid
         type: string
     required:
-    - name
+    - id
     - url
     type: object
 info:

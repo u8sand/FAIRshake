@@ -13,6 +13,10 @@ definitions:
         description: Criterion being evaluated
         example: Coolness
         type: string
+    required:
+    - id
+    - user
+    - name
     type: object
   Rubric:
     description: An rubric for evaluating a digital object
@@ -21,11 +25,24 @@ definitions:
         items:
           $ref: '#/definitions/Criterion'
         type: array
+      description:
+        description: Description of the rubric
+        example: My favorite rubric
+        type: string
       id:
         description: ID of rubric
         example: d290f1ee-6c54-4b01-90e6-d701748f0851
         format: uuid
         type: string
+      name:
+        description: Name of the rubric
+        example: Best Rubric
+        type: string
+      tags:
+        items:
+          example: tool
+          type: string
+        type: array
       timestamp:
         description: When the rubric was made
         example: '2018-05-20T15:59:59-08:00'
@@ -36,6 +53,10 @@ definitions:
         example: d290f1ee-6c54-4b01-90e6-d701748f0851
         format: uuid
         type: string
+    required:
+    - id
+    - user
+    - name
     type: object
 info:
   contact:
@@ -56,6 +77,11 @@ paths:
         format: uuid
         in: query
         name: id
+        type: string
+      - description: Unique user identifier
+        format: uuid
+        in: query
+        name: user
         type: string
       - description: Updated at least since timestamp
         format: dateTime
