@@ -21,3 +21,6 @@ Install dependencies with `pip install -r requirements.txt`.
 
 ### Run Application Tests
 `nosetests`
+
+### Run Application Static Type Checks
+`mypy`
