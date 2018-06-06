@@ -9,8 +9,8 @@ class MockAssessmentAPI:
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[AssessmentModel]:
-    return AssessmentModel()
+    ) -> HTTPResponse[List[AssessmentModel]]:
+    return [AssessmentModel()]
 
   def post(
       body: AssessmentModel

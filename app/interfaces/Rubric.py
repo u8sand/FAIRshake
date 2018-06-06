@@ -43,7 +43,7 @@ class RubricModel:
       type: string
       description: When the rubric was made
       format: dateTime
-      example: 2018-05-20T15:59:59-08:00
+      example: '2018-05-20T15:59:59-08:00'
     criteria:
       type: array
       items:
@@ -88,7 +88,7 @@ class RubricAPI:
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[RubricModel]:
+    ) -> HTTPResponse[List[RubricModel]]:
     '''
     summary: Query rubrics
     consumes:

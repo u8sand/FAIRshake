@@ -11,7 +11,7 @@ class MockRepositoryAPI:
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[DigitalObjectModel]:
+    ) -> HTTPResponse[List[DigitalObjectModel]]:
     return [DigitalObjectModel(
       id='',
       user='',

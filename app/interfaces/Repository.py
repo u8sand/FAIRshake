@@ -38,7 +38,7 @@ class DigitalObjectModel:
       type: string
       format: dateTime
       description: Last updated
-      example: 2018-05-20T15:59:59-08:00
+      example: '2018-05-20T15:59:59-08:00'
   '''
   id: UUID
   url: str
@@ -85,7 +85,7 @@ class RepositoryAPI:
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[DigitalObjectModel]:
+    ) -> HTTPResponse[List[DigitalObjectModel]]:
     '''
     summary: Query for digital objects
     parameters:
@@ -130,10 +130,6 @@ class RepositoryAPI:
     - application/json
     responses:
       200:
-        description: Data object matching query
-        schema:
-          $ref: '#/definitions/DigitalObject'
-      201:
         description: Multiple data objects matching query
         schema:
           type: array
