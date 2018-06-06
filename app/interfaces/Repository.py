@@ -41,13 +41,13 @@ class DigitalObjectModel:
       example: 2018-05-20T15:59:59-08:00
   '''
   id: UUID
-  user: Optional[UUID]
-  name: Optional[str]
   url: str
-  description: Optional[str]
-  image: Optional[str]
-  tags: Optional[List[str]]
-  timestamp: Optional[Timestamp]
+  user: Optional[UUID] = None
+  name: Optional[str] = None
+  description: Optional[str] = None
+  image: Optional[str] = None
+  tags: Optional[List[str]] = None
+  timestamp: Optional[Timestamp] = None
 
 @interface
 class RepositoryAPI:

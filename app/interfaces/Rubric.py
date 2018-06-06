@@ -51,8 +51,8 @@ class RubricModel:
   '''
   id: UUID
   user: UUID
-  timestamp: Optional[Timestamp]
   criteria: List[CriterionModel]
+  timestamp: Optional[Timestamp] = None
 
 @interface
 class RubricAPI:
