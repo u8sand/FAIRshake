@@ -4,6 +4,7 @@ from util.types import HTTPResponse, UUID, Timestamp, Optional, List
 @model
 class CriterionModel:
   '''
+  type: object  
   properties:
     id:
       type: string
@@ -25,6 +26,7 @@ class CriterionModel:
 @model
 class RubricModel:
   '''
+  type: object
   description: An rubric for evaluating a digital object
   properties:
     id:
@@ -41,7 +43,7 @@ class RubricModel:
       type: string
       description: When the rubric was made
       format: dateTime
-      example: '2018-05-20T15:59:60-08:00'
+      example: 2018-05-20T15:59:59-08:00
     criteria:
       type: array
       items:
@@ -74,17 +76,11 @@ class RubricAPI:
       name: X-API-Key
   paths:
     /:
-      get:
-        {RubricAPI__get}
-      post:
-        {RubricAPI__post}
+      get: {RubricAPI__get}
+      post: {RubricAPI__post}
   definitions:
-    Criterion:
-      type: object
-      {CriterionModel}
-    Rubric:
-      type: object
-      {RubricModel}
+    Criterion: {CriterionModel}
+    Rubric: {RubricModel}
   '''
 
   def get(

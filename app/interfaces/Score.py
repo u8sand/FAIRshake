@@ -4,6 +4,7 @@ from util.types import UUID, Timestamp, ContentType, HTTPResponse
 @model
 class ScoreModel:
   '''
+  type: object
   properties:
     criterion:
       type: string
@@ -17,7 +18,7 @@ class ScoreModel:
     timestamp:
       type: string
       description: Last updated
-      example: 2018-05-20T15:59:60-08:00
+      example: 2018-05-20T15:59:59-08:00
   '''
   criterion: UUID
   average: float
@@ -40,14 +41,9 @@ class ScoreAPI:
   - https
   paths:
     /:
-      get:
-        {ScoreAPI__get}
-      post:
-        {ScoreAPI__post}
+      get: {ScoreAPI__get}
   definitions:
-    Score:
-      type: object
-      {ScoreModel}
+    Score: {ScoreModel}
   '''
 
   def get(id: UUID, kind: ContentType) -> HTTPResponse[str]:
@@ -78,6 +74,8 @@ class ScoreAPI:
         schema:
           type: string
           example: '<svg viewBox="0 0 1 1" />'
+      401:
+        description: ContentType not recognized
       404:
         description: Digital object not found
     '''

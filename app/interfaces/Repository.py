@@ -4,6 +4,7 @@ from util.types import HTTPResponse, List, Optional, Timestamp, UUID
 @model
 class DigitalObjectModel:
   '''
+  type: object
   required:
   - name
   - url
@@ -37,7 +38,7 @@ class DigitalObjectModel:
       type: string
       format: dateTime
       description: Last updated
-      example: '2018-05-20T15:59:60-08:00'
+      example: 2018-05-20T15:59:59-08:00
   '''
   id: UUID
   user: Optional[UUID]
@@ -70,14 +71,10 @@ class RepositoryAPI:
       name: X-API-Key
   paths:
     /:
-      get:
-        {RepositoryAPI__get}
-      post:
-        {RepositoryAPI__post}
+      get: {RepositoryAPI__get}
+      post: {RepositoryAPI__post}
   definitions:
-    DigitalObject:
-      type: object
-      {DigitalObjectModel}
+    DigitalObject: {DigitalObjectModel}
   '''
   def get(
       id: Optional[UUID] = None,
