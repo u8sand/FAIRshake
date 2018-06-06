@@ -22,6 +22,12 @@ class DigitalObjectModel:
     url:
       type: string
       example: https://mytool.com/
+    description:
+      type: string
+      example: My tool is widely used.
+    image:
+      type: string
+      example: http://mytool.com/logo.png
     tags:
       type: array
       items:
@@ -37,6 +43,8 @@ class DigitalObjectModel:
   user: Optional[UUID]
   name: Optional[str]
   url: str
+  description: Optional[str]
+  image: Optional[str]
   tags: Optional[List[str]]
   timestamp: Optional[Timestamp]
 
