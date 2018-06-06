@@ -5,7 +5,7 @@ from .first_and_only import first
 space_re = re.compile(r'^( +?)[^ ].+$')
 spec_ptr = re.compile(r'{(?P<mod>.+?)(__(?P<attr>.+))?}')
 
-def yml_doc_2_json(doc):
+def yml_to_json(doc):
   '''
   Convert a yml doc to a json ignoring leading spaces
     (for source docstrings)
@@ -30,12 +30,11 @@ def generate_spec(doc, objs):
   ''' Create a full specification following reference
   doc pointers. For an example, see `test_generate_spec.py`
   '''
-  print('generate_spec({doc}, {objs})'.format(**locals()))
   sub_specs = {}
   for ref in spec_ptr.finditer(doc):
     assert ref.group('mod') in objs.keys(), ref
     if ref.group('attr') is not None:
-      assert ref.group('attr') in dir(objs[ref.group('mod')])
+      assert ref.group('attr') in dir(objs[ref.group('mod')]), 'Cannot find %s in %s' % (ref.group('attr'), ref.group('mod'))
       sub_specs[ref.group('mod')+'__'+ref.group('attr')] = generate_spec(
         getattr(
           objs[ref.group('mod')],
@@ -48,4 +47,4 @@ def generate_spec(doc, objs):
         objs[ref.group('mod')].__doc__,
         objs,
       )
-  return yml_doc_2_json(doc.format(**sub_specs))
+  return yml_to_json(doc.format(**sub_specs))
