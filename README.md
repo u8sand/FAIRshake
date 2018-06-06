@@ -13,7 +13,7 @@ A web interface for the scoring of biomedical digital objects by user evaluation
 ## Development
 
 ### Setting up environment
-Minimum python version of 3.7.
+Python version of >= 3.5 is recommended, type annotation support is required.
 Install dependencies with `pip install -r requirements.txt`.
 
 ### Run FAIRshakeWeb server
