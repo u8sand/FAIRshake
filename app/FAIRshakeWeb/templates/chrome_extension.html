@@ -1,9 +1,8 @@
 {% extends "base.html" %}
+{% set active_page="chrome_extension" %}
 
 {% block header %}
-    {% with active_page="chrome_extension" %}
-        {{ super() }}
-    {% endwith %}
+    {{ super() }}
 
     {% block style %}
         {{ super() }}
@@ -44,27 +43,27 @@
             </ol>
             <div class="carousel-inner">
                 <div class="item active">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/chrome_extension1.png') }}" />
                     </div>
                 </div>
                 <div class="item">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/chrome_extension2.png') }}" />
                     </div>
                 </div>
                 <div class="item">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/chrome_extension3.png') }}" />
                     </div>
                 </div>
                 <div class="item">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/chrome_extension4.png') }}" />
                     </div>
                 </div>
                 <div class="item">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/chrome_extension5.png') }}" />
                     </div>
                 </div>

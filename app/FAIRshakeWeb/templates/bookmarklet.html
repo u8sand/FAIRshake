@@ -1,9 +1,8 @@
 {% extends "base.html" %}
+{% set active_page="bookmarklet" %}
 
 {% block header %}
-    {% with active_page="bookmarklet" %}
-        {{ super() }}
-    {% endwith %}
+    {{ super() }}
 
     {% block style %}
         {{ super() }}
@@ -38,17 +37,17 @@
             </ol>
             <div class="carousel-inner">
                 <div class="item active">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/bookmarklet1.png') }}" alt="First Slide">
                     </div>
                 </div>
                 <div class="item">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/bookmarklet2.png') }}" alt="Second Slide">
                     </div>
                 </div>
                 <div class="item">
-                    <div id="project-img-container">
+                    <div id="project-image-container">
                         <img src="{{ url_for('static', filename='image/example/bookmarklet3.png') }}" alt="Third Slide">
                     </div>
                 </div>
