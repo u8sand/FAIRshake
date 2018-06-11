@@ -10,11 +10,6 @@
 {% endblock %}
 
 {% block content %}
-    <script>
-        function my_evaluations(){
-            location.href = "/project/{{ project.id }}/my_evaluations";
-        }
-    </script>
     <div class="container-fluid">
         <div class="heading">
             <div class="title">
@@ -22,14 +17,9 @@
                 <h4>{{ project.description }} </h4>
             </div>
 {#            {% if current_user.is_authenticated %}#}
-                <div class="btn-group" id="listgrpbtns" data-toggle="buttons">
-                    <label class="btn btn-default listgrpbtn active">
-                        <input type="radio" name="options" autocomplete="off">Resources List
-                    </label>
-
-                    <label class="btn btn-default listgrpbtn" onclick="my_evaluations()">
-                        <input type="radio" name="options" autocomplete="off">My Evaluations
-                    </label>
+                <div class="btn-group" id="listgrpbtns">
+                    <a class="btn btn-default listgrpbtn active">Resources List</a>
+                    <a class="btn btn-default listgrpbtn" href="/project/{{ project.id }}/my_evaluations">My Evaluations</a>
                 </div>
 {#            {% endif %}#}
         </div>
@@ -53,7 +43,7 @@
 {#                        {% if current_user.is_authenticated %}#}
                             <td>
                                 <div class="radio">
-                                    {% if resource.id in current_user_assessments %}
+                                    {% if resource.id in current_user_assessed_resources %}
                                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
                                     {% else: %}
                                         <label><input type="radio" id="resource_id" name="resource_id"

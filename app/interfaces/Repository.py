@@ -82,7 +82,7 @@ class RepositoryAPI:
   '''
   def get(
       id: Optional[UUID] = None,
-      tag: Optional[List[str]] = None,
+      tags: Optional[List[str]] = None,
       user: Optional[UUID] = None,
       name: Optional[str] = None,
       url: Optional[str] = None,

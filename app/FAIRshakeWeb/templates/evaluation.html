@@ -15,27 +15,15 @@
     <h4 style="text-align:center;"><b>ID:</b> {{ resource.id }} &nbsp; <b>Type:</b> {{ resource.type }}</h4>
     <h4 id="bottom-heading" style="text-align:center;"><b>Description:</b> {{ resource.description }}</h4>
     <form action="/new_evaluation" id="evaluation-form" method="POST">
-        <input type="hidden" name="id" value={{ resource.id }}>
-        {% for question_group in questions %}
-            <fieldset class="form-group"><legend>{{ question_group.id }}</legend>
+        <input type="hidden" name="resource_id" value={{ resource.id }}>
+        <input type="hidden" name="rubric_ids" id="rubric_ids">
+        <script>document.getElementById("rubric_ids").value=JSON.stringify({{ rubric_ids|safe }});</script>
+        {% for rubric in rubrics %}
+            <fieldset class="form-group"><legend>{{ rubric.id }}</legend>
             {% set group_index = loop.index %}
-            {% for question in question_group.criteria %}
+            {% for criterion in rubric.criteria %}
                 {% set q_id = "q-%d.%d"|format(group_index, loop.index) %}
-                {% if question.kind == "yesnobut" %}
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input type="checkbox" class="form-check-input" name="{{ q_id }}">
-                      {{ question.name }}
-                    </label>
-                  </div>
-                {% elif question.kind == "text" %}
-                  <div class="form-group row">
-                    <label for="{{ q_id }}" class="col-2 col-form-label">{{ question.name }}</label>
-                    <div class="col-10">
-                      <input class="form-control" type="text" id="{{ q_id }}" name="{{ q_id }}">
-                    </div>
-                  </div>
-                {% endif %}
+                {% include "/question_kinds/" + criterion.kind + ".html" %}
             {% endfor %}
             </fieldset>
         {% endfor %}
@@ -48,13 +36,4 @@
         <button class="btn btn-default" type="submit" value="Cancel" onclick="javascript:window.history.back()">Cancel</button>
     </div>
 </div>
-
-<script>
-    function fillAnswers(){
-        document.getElementById(obj).checked=true;
-    }
-    function fillComments(){
-        document.getElementById(obj+"comment").value=comment;
-    }
-</script>
 {% endblock %}

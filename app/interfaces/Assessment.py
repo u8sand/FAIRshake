@@ -9,7 +9,7 @@ class CriterionModel:
     id:
       type: string
       description: Criterion id in rubric being evaluated
-      example: Coolness
+      example: d290f1ee-6c54-4b01-90e6-d701748f0851
     value:
       type: string
       description: Value of the criterion (of rubric-defined type)

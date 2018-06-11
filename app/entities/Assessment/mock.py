@@ -17,14 +17,14 @@ class MockAssessmentAPI:
       user = '1',
       rubric = '111',
       timestamp = '111',
-      criteria = [CriterionModel(name='xyz',value='abc')]
+      criteria = [CriterionModel(id='123',value='abc')]
     ),
     AssessmentModel(id='2',
       object='2',
-      user='1',ß
+      user='1',
       rubric='111',
       timestamp='111',
-      criteria=[CriterionModel(name='xyz', value='abc')]
+      criteria=[CriterionModel(id='321', value='abc')]
     ),
     ]
 
