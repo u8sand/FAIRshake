@@ -1,0 +1,139 @@
+definitions:
+  Criterion:
+    properties:
+      id:
+        description: Criterion ID
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        type: string
+      kind:
+        description: Value type of the criterion
+        example: number
+        type: string
+      name:
+        description: Criterion being evaluated
+        example: Coolness
+        type: string
+    required:
+    - id
+    - user
+    - name
+    type: object
+  Rubric:
+    description: An rubric for evaluating a digital object
+    properties:
+      criteria:
+        items:
+          $ref: '#/definitions/Criterion'
+        type: array
+      description:
+        description: Description of the rubric
+        example: My favorite rubric
+        type: string
+      id:
+        description: ID of rubric
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+      name:
+        description: Name of the rubric
+        example: Best Rubric
+        type: string
+      tags:
+        items:
+          example: tool
+          type: string
+        type: array
+      timestamp:
+        description: When the rubric was made
+        example: '2018-05-20T15:59:59-08:00'
+        format: dateTime
+        type: string
+      user:
+        description: ID of user who made the rubric
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+    required:
+    - id
+    - user
+    - name
+    type: object
+info:
+  contact:
+    email: daniel.clarke@mssm.edu
+  description: A generic FAIRshake Rubric REST API for storing questions to be answered.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: FAIRshakeRubric
+  version: 1.0.0
+paths:
+  /:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: Unique rubric identifier
+        format: uuid
+        in: query
+        name: id
+        type: string
+      - description: Unique user identifier
+        format: uuid
+        in: query
+        name: user
+        type: string
+      - description: Updated at least since timestamp
+        format: dateTime
+        in: query
+        name: timestamp
+        type: string
+      - description: Start index for limited results
+        in: query
+        name: skip
+        type: number
+      - description: Limit number of results
+        in: query
+        name: limit
+        type: number
+      produces:
+      - application/json
+      responses:
+        200:
+          description: Rubrics as json
+          schema:
+            items:
+              $ref: '#/definitions/Rubric'
+            type: array
+        404:
+          description: Rubrics not found
+      summary: Query rubrics
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - in: body
+        name: body
+        schema:
+          $ref: '#/definitions/Rubric'
+      produces:
+      - application/json
+      responses:
+        201:
+          description: Rubric successfully made
+        400:
+          description: Parameters invalid
+        500:
+          description: Permission denied, not authenticated
+      security:
+      - ApiKeyAuth: []
+      summary: Submit rubric
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: X-API-Key
+    type: apiKey
+swagger: '2.0'
+

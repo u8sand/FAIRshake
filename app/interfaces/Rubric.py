@@ -4,7 +4,11 @@ from util.types import HTTPResponse, UUID, Timestamp, Optional, List
 @model
 class CriterionModel:
   '''
-  type: object  
+  type: object
+  required:
+  - id
+  - user
+  - name
   properties:
     id:
       type: string
@@ -28,6 +32,10 @@ class RubricModel:
   '''
   type: object
   description: An rubric for evaluating a digital object
+  required:
+  - id
+  - user
+  - name
   properties:
     id:
       type: string
@@ -39,20 +47,36 @@ class RubricModel:
       format: uuid
       description: ID of user who made the rubric
       example: d290f1ee-6c54-4b01-90e6-d701748f0851
-    timestamp:
+    name:
       type: string
-      description: When the rubric was made
-      format: dateTime
-      example: 2018-05-20T15:59:59-08:00
+      description: Name of the rubric
+      example: Best Rubric
     criteria:
       type: array
       items:
         $ref: "#/definitions/Criterion"
+    description:
+      type: string
+      description: Description of the rubric
+      example: My favorite rubric
+    tags:
+      type: array
+      items:
+        type: string
+        example: tool
+    timestamp:
+      type: string
+      description: When the rubric was made
+      format: dateTime
+      example: '2018-05-20T15:59:59-08:00'
   '''
   id: UUID
   user: UUID
-  timestamp: Optional[Timestamp]
+  name: str
   criteria: List[CriterionModel]
+  description: Optional[str] = None
+  tags: Optional[List[str]] = None
+  timestamp: Optional[Timestamp] = None
 
 @interface
 class RubricAPI:
@@ -85,10 +109,11 @@ class RubricAPI:
 
   def get(
       id: Optional[UUID] = None,
+      user: Optional[UUID] = None,
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[RubricModel]:
+    ) -> HTTPResponse[List[RubricModel]]:
     '''
     summary: Query rubrics
     consumes:
@@ -97,6 +122,11 @@ class RubricAPI:
     - name: id
       in: query
       description: Unique rubric identifier
+      type: string
+      format: uuid
+    - name: user
+      in: query
+      description: Unique user identifier
       type: string
       format: uuid
     - name: timestamp

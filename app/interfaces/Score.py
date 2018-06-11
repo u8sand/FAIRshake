@@ -5,6 +5,10 @@ from util.types import UUID, Timestamp, ContentType, HTTPResponse
 class ScoreModel:
   '''
   type: object
+  required:
+  - criterion
+  - average
+  - timestamp
   properties:
     criterion:
       type: string
@@ -18,7 +22,7 @@ class ScoreModel:
     timestamp:
       type: string
       description: Last updated
-      example: 2018-05-20T15:59:59-08:00
+      example: '2018-05-20T15:59:59-08:00'
   '''
   criterion: UUID
   average: float
@@ -46,7 +50,10 @@ class ScoreAPI:
     Score: {ScoreModel}
   '''
 
-  def get(id: UUID, kind: ContentType) -> HTTPResponse[str]:
+  def get(
+    id: UUID,
+    kind: ContentType,
+  ) -> HTTPResponse[str]:
     '''
     summary: Query score for a given digital object
     parameters:

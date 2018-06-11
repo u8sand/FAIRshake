@@ -19,5 +19,11 @@ Install dependencies with `pip install -r requirements.txt`.
 ### Run FAIRshakeWeb server
 `python run.py`
 
+### Generate pure swagger spec from interfaces
+`python dump.py`
+
 ### Run Application Tests
 `nosetests`
+
+### Run Application Static Type Checks
+`mypy`

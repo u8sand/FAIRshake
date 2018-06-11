@@ -7,7 +7,7 @@ class MockRubricAPI:
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[RubricModel]:
+    ) -> HTTPResponse[List[RubricModel]]:
     return [RubricModel(
       id='123890',
       user='123231',
@@ -15,6 +15,6 @@ class MockRubricAPI:
     )]
 
   def post(
-      body: RubricModel
+      body: RubricModel,
     ) -> HTTPResponse[None]:
     return HTTPResponse(201)

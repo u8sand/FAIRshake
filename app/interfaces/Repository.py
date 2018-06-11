@@ -6,13 +6,16 @@ class DigitalObjectModel:
   '''
   type: object
   required:
-  - name
+  - id
   - url
   properties:
     id:
       type: string
       format: uuid
       example: d290f1ee-6c54-4b01-90e6-d701748f0851
+    url:
+      type: string
+      example: https://mytool.com/
     user:
       type: string
       format: uuid
@@ -20,9 +23,9 @@ class DigitalObjectModel:
     name:
       type: string
       example: MyTool
-    url:
+    license:
       type: string
-      example: https://mytool.com/
+      example: Apache-2.0
     description:
       type: string
       example: My tool is widely used.
@@ -38,16 +41,17 @@ class DigitalObjectModel:
       type: string
       format: dateTime
       description: Last updated
-      example: 2018-05-20T15:59:59-08:00
+      example: '2018-05-20T15:59:59-08:00'
   '''
   id: UUID
-  user: Optional[UUID]
-  name: Optional[str]
   url: str
-  description: Optional[str]
-  image: Optional[str]
-  tags: Optional[List[str]]
-  timestamp: Optional[Timestamp]
+  user: Optional[UUID] = None
+  name: Optional[str] = None
+  license: Optional[str] = None
+  description: Optional[str] = None
+  image: Optional[str] = None
+  tags: Optional[List[str]] = None
+  timestamp: Optional[Timestamp] = None
 
 @interface
 class RepositoryAPI:
@@ -85,7 +89,7 @@ class RepositoryAPI:
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[DigitalObjectModel]:
+    ) -> HTTPResponse[List[DigitalObjectModel]]:
     '''
     summary: Query for digital objects
     parameters:
@@ -130,10 +134,6 @@ class RepositoryAPI:
     - application/json
     responses:
       200:
-        description: Data object matching query
-        schema:
-          $ref: '#/definitions/DigitalObject'
-      201:
         description: Multiple data objects matching query
         schema:
           type: array

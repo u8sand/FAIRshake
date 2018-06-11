@@ -1,0 +1,68 @@
+definitions:
+  Score:
+    properties:
+      average:
+        description: Average score for this criterion
+        example: 0.54
+        type: number
+      criterion:
+        description: Criterion rubric identifier
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+      timestamp:
+        description: Last updated
+        example: '2018-05-20T15:59:59-08:00'
+        type: string
+    required:
+    - criterion
+    - average
+    - timestamp
+    type: object
+info:
+  contact:
+    email: daniel.clarke@mssm.edu
+  description: A generic FAIRshake Score REST API for aggregating and visualizing
+    the results of FAIRshake assessments.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: FAIRshakeScore
+  version: 1.0.0
+paths:
+  /:
+    get:
+      parameters:
+      - description: Unique Digital Object Identifier
+        in: query
+        name: id
+        required: true
+        type: string
+      - description: Content type of the score we want (e.g. application/json or text/html)
+        in: query
+        name: kind
+        type: string
+      produces:
+      - text/html
+      - application/json
+      responses:
+        200:
+          description: Score as json
+          schema:
+            items:
+              $ref: '#/definitions/Score'
+            type: array
+        201:
+          description: Score as html
+          schema:
+            example: <svg viewBox="0 0 1 1" />
+            type: string
+        401:
+          description: ContentType not recognized
+        404:
+          description: Digital object not found
+      summary: Query score for a given digital object
+schemes:
+- https
+swagger: '2.0'
+
