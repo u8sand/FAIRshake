@@ -6,16 +6,16 @@ class CriterionModel:
   '''
   type: object
   properties:
-    name:
+    id:
       type: string
-      description: Criterion being evaluated
+      description: Criterion id in rubric being evaluated
       example: Coolness
     value:
       type: string
       description: Value of the criterion (of rubric-defined type)
       example: 0.8
   '''
-  name: str
+  id: UUID
   value: str
 
 @model
@@ -28,6 +28,11 @@ class AssessmentModel:
       type: string
       format: uuid
       description: ID of evaluation
+      example: d290f1ee-6c54-4b01-90e6-d701748f0851
+    object:
+      type: string
+      format: uuid
+      description: ID of object evaluated
       example: d290f1ee-6c54-4b01-90e6-d701748f0851
     user:
       type: string
@@ -50,6 +55,7 @@ class AssessmentModel:
         $ref: "#/definitions/Criterion"
   '''
   id: UUID
+  object: UUID
   user: UUID
   rubric: UUID
   timestamp: Optional[Timestamp]
@@ -86,6 +92,7 @@ class AssessmentAPI:
   def get(
       id: Optional[UUID] = None,
       object: Optional[UUID] = None,
+      user: Optional[UUID] = None,
       rubric: Optional[UUID] = None,
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
@@ -109,6 +116,11 @@ class AssessmentAPI:
     - name: rubric
       in: query
       description: Unique rubric identifier
+      type: string
+      format: uuid
+    - name: user
+      in: query
+      description: Unique user identifier
       type: string
       format: uuid
     - name: timestamp

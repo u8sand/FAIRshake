@@ -110,6 +110,7 @@ class RubricAPI:
   def get(
       id: Optional[UUID] = None,
       user: Optional[UUID] = None,
+      object: Optional[UUID] = None,
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
@@ -127,6 +128,9 @@ class RubricAPI:
     - name: user
       in: query
       description: Unique user identifier
+    - name: object
+      in: query
+      description: Unique digital object identifier
       type: string
       format: uuid
     - name: timestamp
