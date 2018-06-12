@@ -32,7 +32,3 @@ def test_generate_spec():
     },
     'blah': 'bleh',
   }
-
-def test_generate_spec_test_api():
-  from ..api import TestAPI
-  generate_spec(TestAPI)
