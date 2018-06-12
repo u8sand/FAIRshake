@@ -12,16 +12,18 @@ class MockRubricAPI:
     return [RubricModel(
       id='123890',
       user='123231',
-      name='yyy',
-      criteria=[CriterionModel(id=123, name='blah', kind='yesnobut'),CriterionModel(id=1234, name='blah2', kind='yesnobut')],
+      name='Rubric1',
+      criteria=[CriterionModel(id='1', name='Question 1 for rubric1', kind='yesnobut'),
+                CriterionModel(id='2', name='Please enter URL for question 1 for rubric1', kind='url'),
+                CriterionModel(id='3', name='Please explain your answer for question 1 for rubric1', kind='text')],
       timestamp='0000'
     ),
       RubricModel(
         id='123891',
         user='123231',
-        name='zzz',
-        criteria=[CriterionModel(id=231, name='xyz1', kind='yesnobut'),
-                  CriterionModel(id=41234, name='xyz2', kind='yesnobut')],
+        name='Rubric2',
+        criteria=[CriterionModel(id='4', name='Question 1 for rubric2', kind='url'),
+                  CriterionModel(id='5', name='Question 2 for rubric2', kind='yesnobut')],
         timestamp='0000'
       )
     ]

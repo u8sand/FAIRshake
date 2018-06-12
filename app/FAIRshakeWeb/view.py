@@ -106,27 +106,28 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     current_user={},
   )
 
-@app.route('/new_evaluation', methods=['GET','POST'])
-def new_evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: AssessmentAPI):
+@app.route('/evaluation', methods=['GET','POST'])
+def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: AssessmentAPI):
   if request.method == 'GET':
     resource_id = request.args.get('id')
     return render_template('evaluation.html',
       resource=repository.get(id=resource_id,limit=1)[0],
       rubrics=rubric.get(id=resource_id),
       rubric_ids=[rubric.id for rubric in rubric.get(id=resource_id)],
+      current_user_assessment=assessment.get(id=resource_id, user=current_user['id']),
       current_user={},
     )
   else:
     resource_id=request.form.get('resource_id')
     rubric_ids=json.loads(request.form.get('rubric_ids'))
     rubrics=[rubric.get(id=rubric_id)[0] for rubric_id in rubric_ids]
-    for rubric_index, rubric in enumerate(rubrics):
+    for rubric in rubrics:
       criteria = [
         {
           'id': criterion.id,
-          'value': request.form.get('q-{:d}.{:d}'.format(rubric_index, criterion_index))
+          'value': request.form.get(criterion.id)
         }
-        for criterion_index, criterion in enumerate(rubric.criteria)
+        for criterion in rubric.criteria
       ]
       assessment.post(
         AssessmentModel(
@@ -138,40 +139,6 @@ def new_evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Ass
       )
     project=repository.get(resource_id).tags[0]
     return redirect('/project/{:d}/resources'.format(project))
-
-@app.route('/modify_evaluation', methods=['GET','POST'])
-def modify_evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: AssessmentAPI):
-  if request.method == 'GET':
-    resource_id = request.args.get('id')
-    return render_template('evaluation.html',
-      resource=repository.get(id=resource_id,limit=1)[0],
-      rubrics=rubric.get(id=resource_id),
-      rubric_ids=[rubric.id for rubric in rubric.get(id=resource_id)],
-      current_user_assessment=assessment.get(id=resource_id,user=current_user['id']),
-      current_user={},
-    )
-  else:
-    resource_id=request.form.get('resource_id')
-    rubric_ids=json.loads(request.form.get('rubric_ids'))
-    rubrics=[rubric.get(id=rubric_id)[0] for rubric_id in rubric_ids]
-    for rubric_index, rubric in enumerate(rubrics):
-      criteria = [
-        {
-          'id': criterion.id,
-          'value': request.form.get('q-{:d}.{:d}'.format(rubric_index,criterion_index))
-        }
-        for criterion_index, criterion in enumerate(rubric.criteria)
-      ]
-      assessment.post(
-        AssessmentModel(
-        object=resource_id,
-        user=current_user['id'],
-        rubric=rubric.id,
-        criteria=criteria
-        )
-      )
-    project=repository.get(resource_id).tags[0]
-    return redirect('/project/{:d}/my_evaluations'.format(project))
 
 @app.route('/evaluated_projects', methods=['GET'])
 def evaluated_projects(repository: RepositoryAPI, assessment: AssessmentAPI):

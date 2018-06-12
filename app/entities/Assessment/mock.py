@@ -15,18 +15,22 @@ class MockAssessmentAPI:
     return [AssessmentModel(id = '1',
       object = '1',
       user = '1',
-      rubric = '111',
+      rubric = '123890',
       timestamp = '111',
-      criteria = [CriterionModel(id='123',value='abc')]
+      criteria = [CriterionModel(id='1',value='yes'),
+                  CriterionModel(id='2', value='http://google.com'),
+                  CriterionModel(id='3', value='some text')]
     ),
     AssessmentModel(id='2',
       object='2',
       user='1',
-      rubric='111',
+      rubric='123891',
       timestamp='111',
-      criteria=[CriterionModel(id='321', value='abc')]
+      criteria=[CriterionModel(id='4', value='http://google.com'),
+                CriterionModel(id='5', value='yes')]
     ),
     ]
+
 
   def post(
       body: AssessmentModel
