@@ -1,6 +1,8 @@
-from interfaces.Assessment import AssessmentModel
+from interfaces.Assessment import AssessmentAPI, AssessmentModel
 from util.types import HTTPResponse, UUID, Timestamp, Optional, List
+from util.decorators import implements
 
+@implements(AssessmentAPI)
 class MockAssessmentAPI:
   def get(
       id: Optional[UUID] = None,
