@@ -5,20 +5,21 @@ def test_generate_spec():
     '''
     my:
       test:
-        {T__k}
+        {T.k}
     blah: bleh
     '''
     def k(self):
       '''
       blue:
-        bla: {T__l}
+        bla: {T.l.j}
       '''
       pass
-    def l(self):
-      '''
-      blop: pop
-      '''
-      pass
+    class l(self):
+      def j(self):
+        '''
+        blop: pop
+        '''
+        pass
   assert generate_spec(T.__doc__, dict(T=T)) == {
     'my': {
       'test': {

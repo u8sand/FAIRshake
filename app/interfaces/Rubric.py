@@ -100,8 +100,8 @@ class RubricAPI:
       name: X-API-Key
   paths:
     /:
-      get: {RubricAPI__get}
-      post: {RubricAPI__post}
+      get: {RubricAPI.get}
+      post: {RubricAPI.post}
   definitions:
     Criterion: {CriterionModel}
     Rubric: {RubricModel}

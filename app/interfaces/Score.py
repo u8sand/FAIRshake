@@ -51,7 +51,7 @@ class ScoreAPI:
   - https
   paths:
     /:
-      get: {ScoreAPI__get}
+      get: {ScoreAPI.get}
   definitions:
     Score: {ScoreModel}
   '''
