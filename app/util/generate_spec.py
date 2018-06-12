@@ -4,7 +4,7 @@ from .deep_getattr import deep_getattr
 from .first_and_only import first
 
 space_re = re.compile(r'^( +?)[^ ].+$')
-spec_ptr = re.compile(r'{(?P<mod>.+?)(\.(?P<attr>.+))?}')
+spec_ptr = re.compile(r'{(?P<mod>.+?)(__(?P<attr>.+))?}')
 
 def yml_to_json(doc):
   '''
@@ -27,17 +27,21 @@ def json_to_yml(obj):
   '''
   return yaml.dump(obj, default_flow_style=False)
 
+def docs_of(objs):
+  return {name: obj.__doc__ for name, obj in objs.items()}
+
 def generate_spec(obj, objs={}):
   ''' Create a full specification following reference
   doc pointers. For an example, see `test_generate_spec.py`
   '''
   doc = obj.__doc__
+  docs = {}
   objs = dict(objs, **{obj.__name__: obj})
   for ref in spec_ptr.finditer(doc):
     assert ref.group('mod') in objs.keys(), ref
     if ref.group('attr') is not None:
-      attr = deep_getattr(objs[ref.group('mod')], ref.group('attr'))
-      objs[ref.group(0)] = generate_spec(attr, objs)
+      attr = deep_getattr(objs[ref.group('mod')], ref.group('attr').replace('__', '.'))
+      docs[ref.group('mod')+'__'+ref.group('attr')] = generate_spec(attr, objs)
     else:
-      objs[ref.group('mod')] = generate_spec(objs[ref.group('mod')], objs)
-  return yml_to_json(doc.format(**objs))
+      docs[ref.group('mod')] = generate_spec(objs[ref.group('mod')], objs)
+  return yml_to_json(doc.format(**docs))

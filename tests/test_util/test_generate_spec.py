@@ -5,22 +5,22 @@ def test_generate_spec():
     '''
     my:
       test:
-        {T.k}
+        {T__k}
     blah: bleh
     '''
-    def k(self):
+    def k():
       '''
       blue:
-        bla: {T.l.j}
+        bla: {T__l__j}
       '''
       pass
-    class l(self):
-      def j(self):
+    class l:
+      def j():
         '''
         blop: pop
         '''
         pass
-  assert generate_spec(T.__doc__, dict(T=T)) == {
+  assert generate_spec(T) == {
     'my': {
       'test': {
         'blue': {
@@ -32,3 +32,7 @@ def test_generate_spec():
     },
     'blah': 'bleh',
   }
+
+def test_generate_spec_test_api():
+  from ..api import TestAPI
+  generate_spec(TestAPI)

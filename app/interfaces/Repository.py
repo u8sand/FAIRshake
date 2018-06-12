@@ -75,8 +75,8 @@ class RepositoryAPI:
       name: X-API-Key
   paths:
     /:
-      get: {RepositoryAPI.get}
-      post: {RepositoryAPI.post}
+      get: {RepositoryAPI__get}
+      post: {RepositoryAPI__post}
   definitions:
     DigitalObject: {DigitalObjectModel}
   '''

@@ -77,8 +77,8 @@ class AssessmentAPI:
       name: X-API-Key
   paths:
     /:
-      get: {AssessmentAPI.get}
-      post: {AssessmentAPI.post}
+      get: {AssessmentAPI__get}
+      post: {AssessmentAPI__post}
   definitions:
     Answer: {AnswerModel}
     Assessment: {AssessmentModel}
