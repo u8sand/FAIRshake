@@ -4,12 +4,12 @@ def mods_to_dict(mods):
   return {mod.__name__: mod for mod in mods}
 
 def test_generate_assessment_spec():
-  from app.interfaces.Assessment import AssessmentAPI, AssessmentModel, CriterionModel
+  from app.interfaces.Assessment import AssessmentAPI, AssessmentModel, AnswerModel
   try:
     generate_spec(AssessmentAPI.__doc__, mods_to_dict([
       AssessmentAPI,
       AssessmentModel,
-      CriterionModel,
+      AnswerModel,
     ]))
   except Exception as e:
     assert False, e

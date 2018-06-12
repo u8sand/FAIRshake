@@ -10,6 +10,11 @@ class ScoreModel:
   - average
   - timestamp
   properties:
+    obj:
+      type: string
+      format: uuid
+      description: Digital object identifier
+      example: d290f1ee-6c54-4b01-90e6-d701748f0851
     criterion:
       type: string
       format: uuid
@@ -24,6 +29,7 @@ class ScoreModel:
       description: Last updated
       example: '2018-05-20T15:59:59-08:00'
   '''
+  obj: UUID
   criterion: UUID
   average: float
   timestamp: Timestamp

@@ -2,17 +2,17 @@ from util.decorators import interface, model
 from util.types import HTTPResponse, UUID, Timestamp, Optional, List
 
 @model
-class CriterionModel:
+class AnswerModel:
   '''
   type: object
   properties:
     name:
       type: string
-      description: Criterion being evaluated
+      description: Answer being evaluated
       example: Coolness
     value:
       type: string
-      description: Value of the criterion (of rubric-defined type)
+      description: Value of the answer (of rubric-defined type)
       example: 0.8
   '''
   name: str
@@ -44,16 +44,16 @@ class AssessmentModel:
       description: When the evaluation was made
       format: dateTime
       example: '2018-05-20T15:59:59-08:00'
-    criteria:
+    answers:
       type: array
       items:
-        $ref: "#/definitions/Criterion"
+        $ref: "#/definitions/Answer"
   '''
   id: UUID
   user: UUID
   rubric: UUID
   timestamp: Optional[Timestamp]
-  criteria: List[CriterionModel]
+  answers: List[AnswerModel]
 
 @interface
 class AssessmentAPI:
@@ -80,11 +80,12 @@ class AssessmentAPI:
       get: {AssessmentAPI__get}
       post: {AssessmentAPI__post}
   definitions:
-    Criterion: {CriterionModel}
+    Answer: {AnswerModel}
     Assessment: {AssessmentModel}
   '''
   def get(
       id: Optional[UUID] = None,
+      user: Optional[UUID] = None,
       object: Optional[UUID] = None,
       rubric: Optional[UUID] = None,
       timestamp: Optional[Timestamp] = None,
@@ -99,6 +100,11 @@ class AssessmentAPI:
     - name: id
       in: query
       description: Unique assessment identifier
+      type: string
+      format: uuid
+    - name: user
+      in: query
+      description: Unique user identifier
       type: string
       format: uuid
     - name: object
