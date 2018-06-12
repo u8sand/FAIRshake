@@ -1,5 +1,6 @@
 from util.decorators import interface, model
 from util.types import HTTPResponse, UUID, Timestamp, Optional, List
+from util.generate_spec import generate_spec
 
 @model
 class AnswerModel:
@@ -171,3 +172,5 @@ class AssessmentAPI:
         description: Permission denied, not authenticated
     '''
     raise NotImplemented
+
+AssessmentSpec = generate_spec(AssessmentAPI, [AssessmentModel, AnswerModel])

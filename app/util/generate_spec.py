@@ -30,18 +30,19 @@ def json_to_yml(obj):
 def docs_of(objs):
   return {name: obj.__doc__ for name, obj in objs.items()}
 
-def generate_spec(obj, objs={}):
+def generate_spec(obj, objs=[]):
   ''' Create a full specification following reference
   doc pointers. For an example, see `test_generate_spec.py`
   '''
   doc = obj.__doc__
   docs = {}
-  objs = dict(objs, **{obj.__name__: obj})
+  objs.append(obj)
+  objs_dict = {obj.__name__: obj for obj in objs}
   for ref in spec_ptr.finditer(doc):
-    assert ref.group('mod') in objs.keys(), ref
+    assert ref.group('mod') in objs_dict.keys(), ref
     if ref.group('attr') is not None:
-      attr = deep_getattr(objs[ref.group('mod')], ref.group('attr').replace('__', '.'))
+      attr = deep_getattr(objs_dict[ref.group('mod')], ref.group('attr').replace('__', '.'))
       docs[ref.group('mod')+'__'+ref.group('attr')] = generate_spec(attr, objs)
     else:
-      docs[ref.group('mod')] = generate_spec(objs[ref.group('mod')], objs)
+      docs[ref.group('mod')] = generate_spec(objs_dict[ref.group('mod')], objs)
   return yml_to_json(doc.format(**docs))
