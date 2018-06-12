@@ -5,27 +5,24 @@ def mods_to_dict(mods):
   return {mod.__name__: mod for mod in mods}
 
 def generate_assessment_spec():
-  from app.interfaces.Assessment import AssessmentAPI, AssessmentModel, CriterionModel
+  from app.interfaces.Assessment import AssessmentAPI, AssessmentModel, AnswerModel
   with open('spec/assessment.yml', 'w') as fh:
-    print(json_to_yml(generate_spec(AssessmentAPI.__doc__, mods_to_dict([
-      AssessmentAPI,
+    print(json_to_yml(generate_spec(AssessmentAPI, mods_to_dict([
       AssessmentModel,
-      CriterionModel,
+      AnswerModel,
     ]))), file=fh)
 
 def generate_repository_spec():
   from app.interfaces.Repository import RepositoryAPI, DigitalObjectModel
   with open('spec/repository.yml', 'w') as fh:
-    print(json_to_yml(generate_spec(RepositoryAPI.__doc__, mods_to_dict([
-      RepositoryAPI,
+    print(json_to_yml(generate_spec(RepositoryAPI, mods_to_dict([
       DigitalObjectModel,
     ]))), file=fh)
 
 def generate_rubric_spec():
   from app.interfaces.Rubric import RubricAPI, RubricModel, CriterionModel
   with open('spec/rubric.yml', 'w') as fh:
-    print(json_to_yml(generate_spec(RubricAPI.__doc__, mods_to_dict([
-      RubricAPI,
+    print(json_to_yml(generate_spec(RubricAPI, mods_to_dict([
       RubricModel,
       CriterionModel,
     ]))), file=fh)
@@ -33,8 +30,7 @@ def generate_rubric_spec():
 def generate_score_spec():
   from app.interfaces.Score import ScoreAPI, ScoreModel
   with open('spec/score.yml', 'w') as fh:
-    print(json_to_yml(generate_spec(ScoreAPI.__doc__, mods_to_dict([
-      ScoreAPI,
+    print(json_to_yml(generate_spec(ScoreAPI, mods_to_dict([
       ScoreModel,
     ]))), file=fh)
 
