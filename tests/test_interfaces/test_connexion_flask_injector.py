@@ -8,6 +8,20 @@ from util.types import HTTPResponse
 
 GoodStatus = Key("GoodStatus")
 
+class SomeInterface:
+  def echo(s: str) -> str:
+    raise NotImplemented
+
+class SomeInterfaceImpl:
+  def echo(s: str) -> str:
+    return s
+
+class ImplModule(Module):
+  @provider
+  @singleton
+  def provide_good_status(self) -> SomeInterface:
+    return SomeInterfaceImpl
+
 class GoodStatusModule(Module):
   @provider
   @singleton
@@ -27,7 +41,7 @@ class TestAPI:
     /:
       get: {TestAPI__get}
   '''
-  def get(a: str, good_status: GoodStatus) -> HTTPResponse[str]:
+  def get(a: str, impl: SomeInterface, good_status: GoodStatus) -> HTTPResponse[str]:
     '''
     summary: A test method
     parameters:
@@ -43,13 +57,13 @@ class TestAPI:
         schema:
           type: string
     '''
-    return a, good_status
+    return impl.echo(a), good_status
 
 def test_connexion_inject():
   spec = generate_spec(TestAPI)
   flask_app = connexion.FlaskApp(TestAPI.__name__)
   flask_app.add_api(spec, resolver=ModuleResolver(TestAPI))
-  FlaskInjector(app=flask_app.app, modules=[GoodStatusModule])
+  FlaskInjector(app=flask_app.app, modules=[ImplModule, GoodStatusModule])
 
   with flask_app.app.test_client() as client:
     response = client.get('/?a=test')
