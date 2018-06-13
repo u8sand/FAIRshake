@@ -15,16 +15,17 @@ class MockRepositoryAPI:
       skip: Optional[int] = None,
       limit: Optional[int] = None,
     ) -> HTTPResponse[List[DigitalObjectModel]]:
-    return [DigitalObjectModel(
-      id='1',
-      user='aaa',
-      name='FAIRness of LINCS Datasets and Tools',
-      url='',
-      tags=['project'],
-      timestamp='',
-      description='FAIR evaluation of LINCS',
-      image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
-    ),
+    return [
+      DigitalObjectModel(
+        id='1',
+        user='aaa',
+        name='FAIRness of LINCS Datasets and Tools',
+        url='',
+        tags=['project'],
+        timestamp='',
+        description='FAIR evaluation of LINCS',
+        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
+      ),
       DigitalObjectModel(
         id='2',
         user='aaa',
@@ -33,7 +34,7 @@ class MockRepositoryAPI:
         tags=[],
         timestamp='',
         description='FAIR evaluation of MOD',
-        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
+        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
       ),
       DigitalObjectModel(
         id='3',
@@ -43,7 +44,7 @@ class MockRepositoryAPI:
         tags=['resource', 'project:1'],
         timestamp='',
         description='FAIR evaluation of LINCS',
-        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
+        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
       ),
       DigitalObjectModel(
         id='4',
@@ -53,7 +54,7 @@ class MockRepositoryAPI:
         tags=['resource', 'project:1'],
         timestamp='',
         description='FAIR evaluation of LINCS',
-        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
+        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
       ),
       DigitalObjectModel(
         id='5',
@@ -63,7 +64,7 @@ class MockRepositoryAPI:
         tags=[],
         timestamp='',
         description='FAIR evaluation of LINCS',
-        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
+        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
       ),
       DigitalObjectModel(
         id='6',
@@ -73,7 +74,7 @@ class MockRepositoryAPI:
         tags=[],
         timestamp='',
         description='FAIR evaluation of LINCS',
-        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
+        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
       ),
       DigitalObjectModel(
         id='7',
@@ -83,19 +84,9 @@ class MockRepositoryAPI:
         tags=[],
         timestamp='',
         description='FAIR evaluation of LINCS',
-        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
-      )
+        image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
+      ),
     ]
-    # return DigitalObjectModel(
-    #   id='1',
-    #   user='aaa',
-    #   name='FAIRness of LINCS Datasets and Tools',
-    #   url='',
-    #   tags=[],
-    #   timestamp='',
-    #   description='FAIR evaluation of LINCS',
-    #   image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif'
-    # )
 
   def post(
       body: DigitalObjectModel

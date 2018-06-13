@@ -1,4 +1,4 @@
-from interfaces.Assessment import AssessmentAPI, AssessmentModel, CriterionModel
+from interfaces.Assessment import AssessmentAPI, AssessmentModel, AnswerModel
 from util.types import HTTPResponse, UUID, Timestamp, Optional, List
 from util.decorators import implements
 
@@ -19,20 +19,23 @@ class MockAssessmentAPI:
       user = '1',
       rubric = '123890',
       timestamp = '111',
-      criteria = [CriterionModel(id='1',value='yes'),
-                  CriterionModel(id='2', value='http://google.com'),
-                  CriterionModel(id='3', value='some text')]
+      answers = [
+        AnswerModel(id='1', value='yes'),
+        AnswerModel(id='2', value='http://google.com'),
+        AnswerModel(id='3', value='some text'),
+      ],
     ),
     AssessmentModel(id='2',
       object='2',
       user='1',
       rubric='123891',
       timestamp='111',
-      criteria=[CriterionModel(id='4', value='http://google.com'),
-                CriterionModel(id='5', value='yes')]
+      answers=[
+        AnswerModel(id='4', value='http://google.com'),
+        AnswerModel(id='5', value='yes'),
+      ],
     ),
     ]
-
 
   def post(
       body: AssessmentModel
