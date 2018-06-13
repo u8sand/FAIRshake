@@ -14,7 +14,7 @@ def interface(iface):
     if callable(attr):
       assert attr.__doc__, '%s does not have a docstring' % (iface)
   def not_constructable(self):
-    raise Exception("Interfaces are not constructable")
+    raise Exception("Interfaces are not constructable (%s)" % (iface.__name__))
   iface.__init__ = not_constructable
   return iface
 
