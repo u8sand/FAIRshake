@@ -94,7 +94,6 @@ class AssessmentAPI:
       id: Optional[UUID] = None,
       user: Optional[UUID] = None,
       object: Optional[UUID] = None,
-      user: Optional[UUID] = None,
       rubric: Optional[UUID] = None,
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
@@ -123,11 +122,6 @@ class AssessmentAPI:
     - name: rubric
       in: query
       description: Unique rubric identifier
-      type: string
-      format: uuid
-    - name: user
-      in: query
-      description: Unique user identifier
       type: string
       format: uuid
     - name: timestamp
