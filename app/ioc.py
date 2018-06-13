@@ -38,19 +38,21 @@ def implements(iface):
     for attr in dir(iface):
       if attr.startswith('_'):
         continue
-      assert getattr(impl, attr, None) is not None, '%s does not implement %s.%s' % (impl.__name__, iface.__name__, attr)
-      assert annotation_subset(
-        getattr(iface, attr),
-        getattr(impl, attr),
-      ), '%s does not implement %s.%s\n%s != %s' % (
+      iface_attr = getattr(iface, attr, None)
+      impl_attr = getattr(impl, attr, None)
+      assert impl_attr is not None, '%s does not implement %s.%s' % (impl.__name__, iface.__name__, attr)
+
+      if callable(impl_attr):
+        assert annotation_subset(iface_attr, impl_attr), '%s does not implement %s.%s\n%s != %s' % (
           impl.__name__, iface.__name__, attr,
           annotations_to_str(func_to_annotations(impl_attr_annotations)),
           annotations_to_str(func_to_annotations(impl_attr_annotations_with_iface_attr_annotations)),
         )
-      try:
-        setattr(getattr(impl, attr), '__doc__', getattr(iface, attr).__doc__)
-      except:
-        pass
+
+        try:
+          setattr(impl_attr, '__doc__', iface_attr.__doc__)
+        except:
+          pass
     injector.binder.bind(iface, to=impl, scope=singleton)
     return impl
   return implements_decorator
