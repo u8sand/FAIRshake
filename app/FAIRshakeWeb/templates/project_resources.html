@@ -45,7 +45,7 @@
                                 <div class="radio">
                                     {% if resource.id in current_user_assessed_resources %}
                                         <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                                    {% else: %}
+                                    {% else %}
                                         <label><input type="radio" id="resource_id" name="resource_id"
                                                       value={{ resource.id }} required></label>
                                     {% endif %}

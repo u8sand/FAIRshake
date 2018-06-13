@@ -1,20 +1,37 @@
+import re
+import json
 from flask import Flask, render_template, request, redirect
-from interfaces.Repository import RepositoryAPI
+from interfaces.Repository import RepositoryAPI, DigitalObjectModel
 from interfaces.Assessment import AssessmentAPI, AssessmentModel
 from interfaces.Rubric import RubricAPI
 from interfaces.Score import ScoreAPI
-import json
+from util.first_and_only import first_and_only, first
 
 app = Flask(__name__)
 
 current_user={'id':1}
+
+project_id_tag_re = re.compile(r'^project:(?P<id>\d+)$')
+
+def get_project_id(repository: DigitalObjectModel):
+  ''' Figure out the project this resource is related to.
+  '''
+  return first_and_only(
+    filter(
+      None,
+      [
+        project_id_tag_re.match(tag)
+        for tag in repository.tags
+      ],
+    )
+  ).group('id')
 
 @app.route('/', methods=['GET'])
 def index(repository: RepositoryAPI):
   ''' FAIRshakeHub Home Page
   '''
   return render_template('index.html',
-    top_projects=repository.get(limit=4)[:4],
+    top_projects=repository.get(limit=4),
     current_user={},
   )
 
@@ -63,11 +80,11 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
     if assessment.get(object=resource.id, user=current_user['id']) != []
   ]
   assessment_count = {
-    resource.id:len(assessment.get(object=resource.id))
+    resource.id: len(assessment.get(object=resource.id))
     for resource in resources
   }
   aggregate_scores = {
-    resource.id:score.get(id=resource.id,kind='text/html')
+    resource.id: score.get(id=resource.id,kind='text/html')
     for resource in resources
   }
   return render_template('project_resources.html',
@@ -111,7 +128,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
   if request.method == 'GET':
     resource_id = request.args.get('id')
     return render_template('evaluation.html',
-      resource=repository.get(id=resource_id,limit=1)[0],
+      resource=first(repository.get(id=resource_id,limit=1)),
       rubrics=rubric.get(id=resource_id),
       rubric_ids=[rubric.id for rubric in rubric.get(id=resource_id)],
       current_user_assessment=assessment.get(id=resource_id, user=current_user['id']),
@@ -120,7 +137,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
   else:
     resource_id=request.form.get('resource_id')
     rubric_ids=json.loads(request.form.get('rubric_ids'))
-    rubrics=[rubric.get(id=rubric_id)[0] for rubric_id in rubric_ids]
+    rubrics=[first(rubric.get(id=rubric_id)) for rubric_id in rubric_ids]
     for rubric in rubrics:
       criteria = [
         {
@@ -131,22 +148,33 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
       ]
       assessment.post(
         AssessmentModel(
-        object=resource_id,
-        user=current_user['id'],
-        rubric=rubric.id,
-        criteria=criteria
+          object=resource_id,
+          user=current_user['id'],
+          rubric=rubric.id,
+          criteria=criteria,
         )
       )
-    project=repository.get(resource_id).tags[0]
+    project = get_project_id(first(repository.get(resource_id)))
     return redirect('/project/{:d}/resources'.format(project))
 
 @app.route('/evaluated_projects', methods=['GET'])
 def evaluated_projects(repository: RepositoryAPI, assessment: AssessmentAPI):
   evaluated_projects_id_list = {
-    repository.get(id=repository.get(id=assessment_each.object)[0].tags[0])[0].id
+    first(
+      repository.get(
+        id=get_project_id(
+          first(
+            repository.get(id=assessment_each.object)
+          )
+        )
+      )
+    ).id
     for assessment_each in assessment.get(user=current_user['id'])
   }
-  evaluated_projects=[repository.get(id=id_each) for id_each in evaluated_projects_id_list]
+  evaluated_projects = [
+    repository.get(id=id_each)
+    for id_each in evaluated_projects_id_list
+  ]
   return render_template('evaluated_projects.html',
     evaluated_projects=evaluated_projects,
     current_user={},

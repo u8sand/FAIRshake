@@ -86,7 +86,7 @@ class MockRepositoryAPI:
         description='FAIR evaluation of LINCS',
         image='https://www.commonfund.nih.gov/sites/default/files/phenotypic_them1.gif',
       ),
-    ]
+    ][:limit]
 
   def post(
       body: DigitalObjectModel
