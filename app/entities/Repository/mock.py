@@ -4,8 +4,9 @@ from ...ioc import implements
 
 @implements(RepositoryAPI)
 class MockRepositoryAPI:
+
+  @staticmethod
   def get(
-      self,
       id: Optional[UUID] = None,
       tags: Optional[List[str]] = None,
       user: Optional[UUID] = None,
@@ -92,6 +93,7 @@ class MockRepositoryAPI:
       if set(tags or []).issubset(set(model.tags))
     ][:limit]
 
+  @staticmethod
   def post(
       body: DigitalObjectModel
     ) -> HTTPResponse[None]:

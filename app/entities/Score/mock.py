@@ -4,6 +4,8 @@ from ...ioc import implements
 
 @implements(ScoreAPI)
 class MockScoreAPI:
+
+  @staticmethod
   def get(
       object: UUID,
       kind: ContentType,

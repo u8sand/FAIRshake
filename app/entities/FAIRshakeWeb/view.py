@@ -84,7 +84,7 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
     for resource in resources
   }
   aggregate_scores = {
-    resource.id: score.get(id=resource.id, kind='text/html')
+    resource.id: score.get(object=resource.id, kind='text/html')
     for resource in resources
   }
   return render_template('project_resources.html',
@@ -107,11 +107,11 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     for resource in current_user_assessed_resources
   }
   aggregate_scores = {
-    resource.id: score.get(id=resource.id, kind='text/html')
+    resource.id: score.get(object=resource.id, kind='text/html')
     for resource in current_user_assessed_resources
   }
   current_user_scores = {
-    resource.id: score.get(id=resource.id, user=current_user['id'], kind='text/html')
+    resource.id: score.get(object=resource.id, user=current_user['id'], kind='text/html')
     for resource in current_user_assessed_resources
   }
   return render_template('project_evaluated_resources.html',

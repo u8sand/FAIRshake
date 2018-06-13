@@ -2,9 +2,9 @@
 '''
 
 import inspect
-from typing import Callable
+from typing import Callable, Dict, Type
 
-def func_to_annotations(func: Callable):
+def func_to_annotations(func: Callable) -> Dict[str, Type]:
   argspec = inspect.getfullargspec(func)
 
   return dict(
@@ -12,7 +12,7 @@ def func_to_annotations(func: Callable):
     **argspec.annotations
   )
 
-def annotations_to_str(annotations: str):
+def annotations_to_str(annotations: Dict[str, Type]) -> str:
   return '%s -> %s' % (
     ', '.join(
       '%s: %s' % (str(key), repr(val))
@@ -22,7 +22,7 @@ def annotations_to_str(annotations: str):
     repr(annotations['return']),
   )
 
-def annotation_subset(iface: Callable, impl: Callable):
+def annotation_subset(iface: Callable, impl: Callable) -> bool:
   iface_annotations = func_to_annotations(iface)
   impl_annotations = func_to_annotations(impl)
   for k, v in impl_annotations.items():

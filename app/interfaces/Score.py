@@ -59,8 +59,8 @@ class ScoreAPI:
 
   @staticmethod
   def get(
-    object: UUID,
-    kind: ContentType,
+    object: UUID = None,
+    kind: ContentType = None,
   ) -> HTTPResponse[Any]:
     '''
     summary: Query score for a given digital object
