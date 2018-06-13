@@ -1,6 +1,6 @@
 from ....interfaces.Score import ScoreModel
-from ....util.decorators import implements
-from ....util.types import UUID, Timestamp
+from ....types import UUID, Timestamp
+from ....ioc import implements
 
 import sqlalchemy as db
 from sqlalchemy.ext.declarative import declarative_base

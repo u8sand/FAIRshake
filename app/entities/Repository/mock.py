@@ -1,6 +1,6 @@
 from ...interfaces.Repository import RepositoryAPI, DigitalObjectModel
-from ...util.types import HTTPResponse, List, Optional, Timestamp, UUID
-from ...util.decorators import implements
+from ...types import HTTPResponse, List, Optional, Timestamp, UUID
+from ...ioc import implements
 
 @implements(RepositoryAPI)
 class MockRepositoryAPI:

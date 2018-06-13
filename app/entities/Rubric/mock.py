@@ -1,6 +1,6 @@
 from ...interfaces.Rubric import RubricAPI, RubricModel, CriterionModel
-from ...util.types import HTTPResponse, UUID, Timestamp, Optional, List
-from ...util.decorators import implements
+from ...types import HTTPResponse, UUID, Timestamp, Optional, List
+from ...ioc import implements
 
 @implements(RubricAPI)
 class MockRubricAPI:

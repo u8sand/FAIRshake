@@ -2,9 +2,9 @@ import json
 import connexion
 from injector import Module, Key, provider, singleton, inject
 from flask_injector import FlaskInjector
+from app.types import HTTPResponse
 from app.util.generate_spec import generate_spec, json_to_yml
 from app.util.module_resolver import ModuleResolver
-from app.util.types import HTTPResponse
 
 GoodStatus = Key("GoodStatus")
 

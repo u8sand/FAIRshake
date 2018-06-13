@@ -1,6 +1,6 @@
 from injector import Module, provider, singleton
-from ...util.types import ConnexionConfig, FlaskConfig, FlaskRunConfig
-from ... import injector
+from ...types import ConnexionConfig, FlaskConfig, FlaskRunConfig
+from ...ioc import injector
 
 @injector.binder.install
 class ConfigureModule(Module):

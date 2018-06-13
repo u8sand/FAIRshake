@@ -1,6 +1,6 @@
 from injector import Injector, Module, provider, singleton, inject
-from ...util.types import App, AppRunner, FlaskApp, API, APISpec, ConnexionConfig, FlaskConfig, FlaskRunConfig
-from ... import injector
+from ...types import App, AppRunner, FlaskApp, API, APISpec, ConnexionConfig, FlaskConfig, FlaskRunConfig
+from ...ioc import injector
 
 @injector.binder.install
 class ConnexionAppModule(Module):

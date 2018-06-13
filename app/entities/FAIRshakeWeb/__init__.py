@@ -1,7 +1,7 @@
 
 from injector import Module, provider, singleton, inject
-from ...util.types import FlaskApp
-from ... import injector
+from ...types import FlaskApp
+from ...ioc import injector
 
 @injector.binder.install
 class FAIRshakeWeb(Module):

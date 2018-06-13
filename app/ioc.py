@@ -1,3 +1,11 @@
+''' Global injector instance and decorator helpers
+'''
+
+from injector import Injector, singleton
+
+injector = Injector()
+injector.binder.bind(Injector, to=injector, scope=singleton)
+
 from dataclasses import dataclass
 
 def model(mod):
@@ -34,8 +42,6 @@ def implements(iface):
         setattr(getattr(impl, attr), '__doc__', getattr(iface, attr).__doc__)
       except:
         pass
-    from injector import singleton
-    from .. import injector
     injector.binder.bind(iface, to=impl, scope=singleton)
     return impl
   return implements_decorator
