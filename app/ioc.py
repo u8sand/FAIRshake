@@ -6,6 +6,7 @@ from injector import Injector, singleton
 injector = Injector()
 injector.binder.bind(Injector, to=injector, scope=singleton)
 
+from .util.annotations import func_to_annotations, annotations_to_str
 from dataclasses import dataclass
 
 def model(mod):
@@ -38,6 +39,15 @@ def implements(iface):
       if attr.startswith('_'):
         continue
       assert getattr(impl, attr, None) is not None, '%s does not implement %s.%s' % (impl.__name__, iface.__name__, attr)
+      iface_attr_annotations = func_to_annotations(getattr(iface, attr))
+      impl_attr_annotations = func_to_annotations(getattr(impl, attr))
+      impl_attr_annotations_with_iface_attr_annotations = dict(impl_attr_annotations, **iface_attr_annotations)
+      assert impl_attr_annotations_with_iface_attr_annotations == impl_attr_annotations, \
+        '%s does not implement %s.%s\n%s != %s' % (
+          impl.__name__, iface.__name__, attr,
+          annotations_to_str(impl_attr_annotations),
+          annotations_to_str(impl_attr_annotations_with_iface_attr_annotations),
+        )
       try:
         setattr(getattr(impl, attr), '__doc__', getattr(iface, attr).__doc__)
       except:
