@@ -9,7 +9,7 @@ from ...util.first_and_only import first_and_only, first
 
 app = Flask(__name__)
 
-current_user={'id':1}
+current_user = {'id': 1}
 
 project_id_tag_re = re.compile(r'^project:(?P<id>\d+)$')
 
@@ -84,11 +84,11 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
     for resource in resources
   }
   aggregate_scores = {
-    resource.id: score.get(id=resource.id,kind='text/html')
+    resource.id: score.get(id=resource.id, kind='text/html')
     for resource in resources
   }
   return render_template('project_resources.html',
-    project=repository.get(id=project,limit=1)[0],
+    project=repository.get(id=project, limit=1)[0],
     resources=resources,
     aggregate_scores=aggregate_scores,
     assessment_count=assessment_count,
@@ -111,11 +111,11 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     for resource in current_user_assessed_resources
   }
   current_user_scores = {
-    resource.id: score.get(id=resource.id,user=current_user['id'],kind='text/html')
+    resource.id: score.get(id=resource.id, user=current_user['id'], kind='text/html')
     for resource in current_user_assessed_resources
   }
   return render_template('project_evaluated_resources.html',
-    project=repository.get(id=project,limit=1)[0],
+    project=repository.get(id=project, limit=1)[0],
     aggregate_scores=aggregate_scores,
     current_user_scores=current_user_scores,
     assessment_count=assessment_count,
@@ -123,12 +123,12 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     current_user={},
   )
 
-@app.route('/evaluation', methods=['GET','POST'])
+@app.route('/evaluation', methods=['GET', 'POST'])
 def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: AssessmentAPI):
   if request.method == 'GET':
     resource_id = request.args.get('id')
     return render_template('evaluation.html',
-      resource=first(repository.get(id=resource_id,limit=1)),
+      resource=first(repository.get(id=resource_id, limit=1)),
       rubrics=rubric.get(id=resource_id),
       rubric_ids=[rubric.id for rubric in rubric.get(id=resource_id)],
       current_user_assessment=assessment.get(id=resource_id, user=current_user['id']),
