@@ -74,7 +74,7 @@ def register():
 
 @app.route('/project/<int:project>/resources', methods=['GET'])
 def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: ScoreAPI, project):
-  resources=repository.get(tags=[project])
+  resources=repository.get(tags=['project:{:d}'.format(project)])
   current_user_assessed_resources = [
     resource.id for resource in resources
     if assessment.get(object=resource.id, user=current_user['id']) != []
@@ -99,7 +99,7 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
 @app.route('/project/<int:project>/my_evaluations', methods=['GET'])
 def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: ScoreAPI, project):
   current_user_assessed_resources = [
-    resource for resource in repository.get(tags=[project])
+    resource for resource in repository.get(tags=['project:{:d}'.format(project)])
     if assessment.get(object=resource.id, user=current_user['id']) != []
   ]
   assessment_count = {
