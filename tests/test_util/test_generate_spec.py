@@ -8,18 +8,19 @@ def test_generate_spec():
         {T__k}
     blah: bleh
     '''
-    def k(self):
+    def k():
       '''
       blue:
-        bla: {T__l}
+        bla: {T__l__j}
       '''
       pass
-    def l(self):
-      '''
-      blop: pop
-      '''
-      pass
-  assert generate_spec(T.__doc__, dict(T=T)) == {
+    class l:
+      def j():
+        '''
+        blop: pop
+        '''
+        pass
+  assert generate_spec(T) == {
     'my': {
       'test': {
         'blue': {

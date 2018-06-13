@@ -1,5 +1,6 @@
 from util.decorators import interface, model
 from util.types import HTTPResponse, List, Optional, Timestamp, UUID
+from util.generate_spec import generate_spec
 
 @model
 class DigitalObjectModel:
@@ -173,3 +174,5 @@ class RepositoryAPI:
         description: Permission denied, not authenticated
     '''
     raise NotImplemented
+
+RepositorySpec = generate_spec(RepositoryAPI, [DigitalObjectModel])

@@ -1,5 +1,6 @@
 from util.decorators import interface, model
 from util.types import HTTPResponse, UUID, Timestamp, Optional, List
+from util.generate_spec import generate_spec
 
 @model
 class CriterionModel:
@@ -185,3 +186,5 @@ class RubricAPI:
         description: Permission denied, not authenticated
     '''
     raise NotImplemented
+
+RubricSpec = generate_spec(RubricAPI, [RubricModel, CriterionModel])

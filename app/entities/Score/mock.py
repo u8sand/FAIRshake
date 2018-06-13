@@ -1,6 +1,8 @@
-from interfaces.Score import ScoreModel
+from interfaces.Score import ScoreAPI, ScoreModel
 from util.types import Any, UUID, Timestamp, ContentType, HTTPResponse, Optional
+from util.decorators import implements
 
+@implements(ScoreAPI)
 class MockScoreAPI:
   def get(self,
       id: Optional[UUID] = None,

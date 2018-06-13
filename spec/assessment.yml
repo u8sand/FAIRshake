@@ -1,10 +1,21 @@
 definitions:
+  Answer:
+    properties:
+      name:
+        description: Answer being evaluated
+        example: Coolness
+        type: string
+      value:
+        description: Value of the answer (of rubric-defined type)
+        example: 0.8
+        type: string
+    type: object
   Assessment:
     description: An evaluation on a digital object based on a rubric
     properties:
-      criteria:
+      answers:
         items:
-          $ref: '#/definitions/Criterion'
+          $ref: '#/definitions/Answer'
         type: array
       id:
         description: ID of evaluation
@@ -27,17 +38,6 @@ definitions:
         format: uuid
         type: string
     type: object
-  Criterion:
-    properties:
-      name:
-        description: Criterion being evaluated
-        example: Coolness
-        type: string
-      value:
-        description: Value of the criterion (of rubric-defined type)
-        example: 0.8
-        type: string
-    type: object
 info:
   contact:
     email: daniel.clarke@mssm.edu
@@ -58,6 +58,11 @@ paths:
         format: uuid
         in: query
         name: id
+        type: string
+      - description: Unique user identifier
+        format: uuid
+        in: query
+        name: user
         type: string
       - description: Unique object identifier
         format: uuid

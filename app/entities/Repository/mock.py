@@ -1,6 +1,8 @@
-from interfaces.Repository import DigitalObjectModel
+from interfaces.Repository import RepositoryAPI, DigitalObjectModel
 from util.types import HTTPResponse, List, Optional, Timestamp, UUID
+from util.decorators import implements
 
+@implements(RepositoryAPI)
 class MockRepositoryAPI:
   def get(
       self,

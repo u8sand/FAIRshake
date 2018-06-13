@@ -1,6 +1,8 @@
-from interfaces.Rubric import RubricModel, CriterionModel
+from interfaces.Rubric import RubricAPI, RubricModel, CriterionModel
 from util.types import HTTPResponse, UUID, Timestamp, Optional, List
+from util.decorators import implements
 
+@implements(RubricAPI)
 class MockRubricAPI:
   def get(
       self,

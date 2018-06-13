@@ -1,8 +1,9 @@
 from util.decorators import interface, model
 from util.types import HTTPResponse, UUID, Timestamp, Optional, List
+from util.generate_spec import generate_spec
 
 @model
-class CriterionModel:
+class AnswerModel:
   '''
   type: object
   properties:
@@ -12,7 +13,7 @@ class CriterionModel:
       example: d290f1ee-6c54-4b01-90e6-d701748f0851
     value:
       type: string
-      description: Value of the criterion (of rubric-defined type)
+      description: Value of the answer (of rubric-defined type)
       example: 0.8
   '''
   id: UUID
@@ -49,17 +50,17 @@ class AssessmentModel:
       description: When the evaluation was made
       format: dateTime
       example: '2018-05-20T15:59:59-08:00'
-    criteria:
+    answers:
       type: array
       items:
-        $ref: "#/definitions/Criterion"
+        $ref: "#/definitions/Answer"
   '''
   id: UUID
   object: UUID
   user: UUID
   rubric: UUID
   timestamp: Optional[Timestamp]
-  criteria: List[CriterionModel]
+  answers: List[AnswerModel]
 
 @interface
 class AssessmentAPI:
@@ -86,11 +87,12 @@ class AssessmentAPI:
       get: {AssessmentAPI__get}
       post: {AssessmentAPI__post}
   definitions:
-    Criterion: {CriterionModel}
+    Answer: {AnswerModel}
     Assessment: {AssessmentModel}
   '''
   def get(
       id: Optional[UUID] = None,
+      user: Optional[UUID] = None,
       object: Optional[UUID] = None,
       user: Optional[UUID] = None,
       rubric: Optional[UUID] = None,
@@ -106,6 +108,11 @@ class AssessmentAPI:
     - name: id
       in: query
       description: Unique assessment identifier
+      type: string
+      format: uuid
+    - name: user
+      in: query
+      description: Unique user identifier
       type: string
       format: uuid
     - name: object
@@ -177,3 +184,5 @@ class AssessmentAPI:
         description: Permission denied, not authenticated
     '''
     raise NotImplemented
+
+AssessmentSpec = generate_spec(AssessmentAPI, [AssessmentModel, AnswerModel])
