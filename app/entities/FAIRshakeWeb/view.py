@@ -9,7 +9,7 @@ from ...util.first_and_only import first_and_only, first
 
 app = Flask(__name__)
 
-current_user = {'id': 1}
+current_user = {'id': '1'}
 
 project_id_tag_re = re.compile(r'^project:(?P<id>\d+)$')
 
@@ -38,7 +38,7 @@ def index(repository: RepositoryAPI):
 @app.route('/projects', methods=['GET'])
 def projects(repository: RepositoryAPI):
   return render_template('projects.html',
-    projects=repository.get(),
+    projects=repository.get(tags=['project']),
     current_user={},
   )
 
@@ -88,7 +88,7 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
     for resource in resources
   }
   return render_template('project_resources.html',
-    project=repository.get(id=project, limit=1)[0],
+    project=first(repository.get(id='{:d}'.format(project), limit=1)),
     resources=resources,
     aggregate_scores=aggregate_scores,
     assessment_count=assessment_count,
@@ -115,7 +115,7 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     for resource in current_user_assessed_resources
   }
   return render_template('project_evaluated_resources.html',
-    project=repository.get(id=project, limit=1)[0],
+    project=first(repository.get(id='{:d}'.format(project), limit=1)),
     aggregate_scores=aggregate_scores,
     current_user_scores=current_user_scores,
     assessment_count=assessment_count,
@@ -129,9 +129,9 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
     resource_id = request.args.get('id')
     return render_template('evaluation.html',
       resource=first(repository.get(id=resource_id, limit=1)),
-      rubrics=rubric.get(id=resource_id),
-      rubric_ids=[rubric.id for rubric in rubric.get(id=resource_id)],
-      current_user_assessment=assessment.get(id=resource_id, user=current_user['id']),
+      rubrics=rubric.get(),
+      rubric_ids=[rubric.id for rubric in rubric.get()],
+      current_user_assessment=assessment.get(object=resource_id, user=current_user['id']),
       current_user={},
     )
   else:
@@ -139,7 +139,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
     rubric_ids=json.loads(request.form.get('rubric_ids'))
     rubrics=[first(rubric.get(id=rubric_id)) for rubric_id in rubric_ids]
     for rubric in rubrics:
-      criteria = [
+      answers = [
         {
           'id': criterion.id,
           'value': request.form.get(criterion.id)
@@ -151,7 +151,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
           object=resource_id,
           user=current_user['id'],
           rubric=rubric.id,
-          criteria=criteria,
+          answers=answers,
         )
       )
     project = get_project_id(first(repository.get(resource_id)))
@@ -172,7 +172,7 @@ def evaluated_projects(repository: RepositoryAPI, assessment: AssessmentAPI):
     for assessment_each in assessment.get(user=current_user['id'])
   }
   evaluated_projects = [
-    repository.get(id=id_each)
+    first(repository.get(id=id_each))
     for id_each in evaluated_projects_id_list
   ]
   return render_template('evaluated_projects.html',
