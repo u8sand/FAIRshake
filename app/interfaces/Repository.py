@@ -1,6 +1,6 @@
-from util.decorators import interface, model
-from util.types import HTTPResponse, List, Optional, Timestamp, UUID
-from util.generate_spec import generate_spec
+from ..util.decorators import interface, model
+from ..util.types import HTTPResponse, List, Optional, Timestamp, UUID
+from ..util.generate_spec import generate_spec
 
 @model
 class DigitalObjectModel:

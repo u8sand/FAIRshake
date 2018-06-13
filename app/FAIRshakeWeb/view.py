@@ -1,5 +1,5 @@
 from flask import Flask, render_template
-from interfaces.Repository import RepositoryAPI
+from ..interfaces.Repository import RepositoryAPI
 
 app = Flask(__name__)
 

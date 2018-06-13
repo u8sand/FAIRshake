@@ -1,8 +1,8 @@
-from interfaces.Assessment import AssessmentAPI
-from interfaces.Rubric import RubricAPI
-from interfaces.Score import ScoreAPI
-from util.decorators import implements
-from util.types import ContentType, UUID, HTTPResponse
+from ....interfaces.Assessment import AssessmentAPI
+from ....interfaces.Rubric import RubricAPI
+from ....interfaces.Score import ScoreAPI
+from ....util.decorators import implements
+from ....util.types import ContentType, UUID, HTTPResponse
 
 from .model import Score
 from .views import kinds

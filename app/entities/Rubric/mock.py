@@ -1,6 +1,6 @@
-from interfaces.Rubric import RubricAPI, RubricModel, CriterionModel
-from util.types import HTTPResponse, UUID, Timestamp, Optional, List
-from util.decorators import implements
+from ...interfaces.Rubric import RubricAPI, RubricModel, CriterionModel
+from ...util.types import HTTPResponse, UUID, Timestamp, Optional, List
+from ...util.decorators import implements
 
 @implements(RubricAPI)
 class MockRubricAPI:
@@ -13,6 +13,7 @@ class MockRubricAPI:
     return [RubricModel(
       id='123890',
       user='123231',
+      name='blah rubric',
       criteria=[CriterionModel(id=123, name='blah', kind='text')],
     )]
 
