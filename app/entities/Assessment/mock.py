@@ -14,27 +14,30 @@ class MockAssessmentAPI:
       skip: Optional[int] = None,
       limit: Optional[int] = None,
     ) -> HTTPResponse[AssessmentModel]:
-    return [AssessmentModel(id = '1',
-      object = '1',
-      user = '1',
-      rubric = '123890',
-      timestamp = '111',
-      answers = [
-        AnswerModel(id='1', value='yes'),
-        AnswerModel(id='2', value='http://google.com'),
-        AnswerModel(id='3', value='some text'),
-      ],
-    ),
-    AssessmentModel(id='2',
-      object='2',
-      user='1',
-      rubric='123891',
-      timestamp='111',
-      answers=[
-        AnswerModel(id='4', value='http://google.com'),
-        AnswerModel(id='5', value='yes'),
-      ],
-    ),
+    return [
+      AssessmentModel(
+        id='1',
+        object='1',
+        user='1',
+        rubric='123890',
+        timestamp='111',
+        answers=[
+          AnswerModel(criterion='1', value='yes'),
+          AnswerModel(criterion='2', value='http://google.com'),
+          AnswerModel(criterion='3', value='some text'),
+        ],
+      ),
+      AssessmentModel(
+        id='2',
+        object='2',
+        user='1',
+        rubric='123891',
+        timestamp='111',
+        answers=[
+          AnswerModel(criterion='4', value='http://google.com'),
+          AnswerModel(criterion='5', value='yes'),
+        ],
+      ),
     ]
 
   def post(

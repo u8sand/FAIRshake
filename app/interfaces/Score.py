@@ -59,13 +59,13 @@ class ScoreAPI:
 
   @staticmethod
   def get(
-    id: UUID,
+    object: UUID,
     kind: ContentType,
   ) -> HTTPResponse[str]:
     '''
     summary: Query score for a given digital object
     parameters:
-    - name: id
+    - name: object
       in: query
       type: string
       description: Unique Digital Object Identifier

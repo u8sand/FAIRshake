@@ -7,7 +7,7 @@ class AnswerModel:
   '''
   type: object
   properties:
-    id:
+    criterion:
       type: string
       description: Criterion id in rubric being evaluated
       example: d290f1ee-6c54-4b01-90e6-d701748f0851
@@ -16,7 +16,7 @@ class AnswerModel:
       description: Value of the answer (of rubric-defined type)
       example: 0.8
   '''
-  id: UUID
+  criterion: UUID
   value: str
 
 @model
