@@ -1,5 +1,5 @@
 from ..ioc import interface, model
-from ..types import UUID, Timestamp, ContentType, HTTPResponse
+from ..types import UUID, Timestamp, ContentType, HTTPResponse, Any
 from ..util.generate_spec import generate_spec
 
 @model
@@ -61,7 +61,7 @@ class ScoreAPI:
   def get(
     object: UUID,
     kind: ContentType,
-  ) -> HTTPResponse[str]:
+  ) -> HTTPResponse[Any]:
     '''
     summary: Query score for a given digital object
     parameters:

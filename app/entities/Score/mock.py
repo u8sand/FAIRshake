@@ -4,10 +4,9 @@ from ...ioc import implements
 
 @implements(ScoreAPI)
 class MockScoreAPI:
-  def get(self,
-      id: Optional[UUID] = None,
-      user: Optional[UUID] = None,
-      kind: Optional[ContentType] = None,
+  def get(
+      object: UUID,
+      kind: ContentType,
     ) -> HTTPResponse[Any]:
     return '''
       <svg width="40" height="40">

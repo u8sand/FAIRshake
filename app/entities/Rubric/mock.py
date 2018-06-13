@@ -4,9 +4,12 @@ from ...ioc import implements
 
 @implements(RubricAPI)
 class MockRubricAPI:
+
+  @staticmethod
   def get(
-      self,
       id: Optional[UUID] = None,
+      user: Optional[UUID] = None,
+      object: Optional[UUID] = None,
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
@@ -35,6 +38,7 @@ class MockRubricAPI:
       ),
     ]
 
+  @staticmethod
   def post(
       body: RubricModel,
     ) -> HTTPResponse[None]:

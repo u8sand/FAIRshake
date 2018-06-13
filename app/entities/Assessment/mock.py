@@ -4,8 +4,9 @@ from ...ioc import implements
 
 @implements(AssessmentAPI)
 class MockAssessmentAPI:
+
+  @staticmethod
   def get(
-      self,
       id: Optional[UUID] = None,
       user: Optional[UUID] = None,
       object: Optional[UUID] = None,
@@ -13,7 +14,7 @@ class MockAssessmentAPI:
       timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
-    ) -> HTTPResponse[AssessmentModel]:
+    ) -> HTTPResponse[List[AssessmentModel]]:
     return [
       AssessmentModel(
         id='1',
@@ -40,6 +41,7 @@ class MockAssessmentAPI:
       ),
     ]
 
+  @staticmethod
   def post(
       body: AssessmentModel
     ) -> HTTPResponse[None]:
