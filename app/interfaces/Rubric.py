@@ -1,6 +1,6 @@
-from util.decorators import interface, model
-from util.types import HTTPResponse, UUID, Timestamp, Optional, List
-from util.generate_spec import generate_spec
+from ..ioc import interface, model
+from ..types import HTTPResponse, UUID, Timestamp, Optional, List
+from ..util.generate_spec import generate_spec
 
 @model
 class CriterionModel:
