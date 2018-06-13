@@ -90,6 +90,8 @@ class AssessmentAPI:
     Answer: {AnswerModel}
     Assessment: {AssessmentModel}
   '''
+
+  @staticmethod
   def get(
       id: Optional[UUID] = None,
       user: Optional[UUID] = None,
@@ -151,6 +153,7 @@ class AssessmentAPI:
     '''
     raise NotImplemented
 
+  @staticmethod
   def post(
       body: AssessmentModel
     ) -> HTTPResponse[None]:

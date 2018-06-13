@@ -26,4 +26,4 @@ Install dependencies with `pip install -r requirements.txt`.
 `nosetests`
 
 ### Run Application Static Type Checks
-`mypy`
+`mypy --ignore-missing-imports app`

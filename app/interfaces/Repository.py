@@ -81,6 +81,8 @@ class RepositoryAPI:
   definitions:
     DigitalObject: {DigitalObjectModel}
   '''
+
+  @staticmethod
   def get(
       id: Optional[UUID] = None,
       tags: Optional[List[str]] = None,
@@ -149,6 +151,7 @@ class RepositoryAPI:
     '''
     raise NotImplemented
 
+  @staticmethod
   def post(
       body: DigitalObjectModel
     ) -> HTTPResponse[None]:

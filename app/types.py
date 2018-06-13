@@ -24,9 +24,9 @@ T = TypeVar('T')
 class HTTPResponse(Generic[T]):
   pass
 
-Interface = NewType("Interface", Any)
-Implementation = NewType("Implementation", Any)
-Model = NewType("Model", Any)
+Interface = NewType("Interface", object)
+Implementation = NewType("Implementation", object)
+Model = NewType("Model", object)
 
 from injector import Key
 

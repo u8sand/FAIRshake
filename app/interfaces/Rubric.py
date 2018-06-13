@@ -108,6 +108,7 @@ class RubricAPI:
     Rubric: {RubricModel}
   '''
 
+  @staticmethod
   def get(
       id: Optional[UUID] = None,
       user: Optional[UUID] = None,
@@ -161,6 +162,7 @@ class RubricAPI:
     '''
     raise NotImplemented
 
+  @staticmethod
   def post(
       body: RubricModel
     ) -> HTTPResponse[None]:

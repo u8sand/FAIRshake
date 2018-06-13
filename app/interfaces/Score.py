@@ -57,6 +57,7 @@ class ScoreAPI:
     Score: {ScoreModel}
   '''
 
+  @staticmethod
   def get(
     id: UUID,
     kind: ContentType,
