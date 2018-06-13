@@ -1,6 +1,6 @@
-from interfaces.Score import ScoreAPI, ScoreModel
-from util.types import Any, UUID, Timestamp, ContentType, HTTPResponse, Optional
-from util.decorators import implements
+from ...interfaces.Score import ScoreAPI, ScoreModel
+from ...types import Any, UUID, Timestamp, ContentType, HTTPResponse, Optional
+from ...ioc import implements
 
 @implements(ScoreAPI)
 class MockScoreAPI:

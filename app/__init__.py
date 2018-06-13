@@ -1,4 +1,6 @@
-# Ensure we have access to root modules anywhere in project
+''' Import all modules in entities for their side-effects on the injector.
+'''
+
 import os
-import sys
-sys.path.append(os.path.dirname(__file__))
+from .util.importer import walk_directory
+walk_directory(os.path.dirname(__file__), 'entities', __package__)

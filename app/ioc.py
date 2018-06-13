@@ -1,3 +1,11 @@
+''' Global injector instance and decorator helpers
+'''
+
+from injector import Injector, singleton
+
+injector = Injector()
+injector.binder.bind(Injector, to=injector, scope=singleton)
+
 from dataclasses import dataclass
 
 def model(mod):
@@ -14,7 +22,7 @@ def interface(iface):
     if callable(attr):
       assert attr.__doc__, '%s does not have a docstring' % (iface)
   def not_constructable(self):
-    raise Exception("Interfaces are not constructable")
+    raise Exception("Interfaces are not constructable (%s)" % (iface.__name__))
   iface.__init__ = not_constructable
   return iface
 
@@ -34,5 +42,6 @@ def implements(iface):
         setattr(getattr(impl, attr), '__doc__', getattr(iface, attr).__doc__)
       except:
         pass
+    injector.binder.bind(iface, to=impl, scope=singleton)
     return impl
   return implements_decorator

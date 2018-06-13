@@ -1,6 +1,6 @@
-from interfaces.Assessment import AssessmentAPI, AssessmentModel, AnswerModel
-from util.types import HTTPResponse, UUID, Timestamp, Optional, List
-from util.decorators import implements
+from ...interfaces.Assessment import AssessmentAPI, AssessmentModel, AnswerModel
+from ...types import HTTPResponse, UUID, Timestamp, Optional, List
+from ...ioc import implements
 
 @implements(AssessmentAPI)
 class MockAssessmentAPI:

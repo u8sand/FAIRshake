@@ -1,11 +1,11 @@
 import re
 import json
 from flask import Flask, render_template, request, redirect
-from interfaces.Repository import RepositoryAPI, DigitalObjectModel
-from interfaces.Assessment import AssessmentAPI, AssessmentModel
-from interfaces.Rubric import RubricAPI
-from interfaces.Score import ScoreAPI
-from util.first_and_only import first_and_only, first
+from ...interfaces.Repository import RepositoryAPI, DigitalObjectModel
+from ...interfaces.Assessment import AssessmentAPI, AssessmentModel
+from ...interfaces.Rubric import RubricAPI
+from ...interfaces.Score import ScoreAPI
+from ...util.first_and_only import first_and_only, first
 
 app = Flask(__name__)
 
