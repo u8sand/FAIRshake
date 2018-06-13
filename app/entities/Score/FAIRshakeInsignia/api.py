@@ -1,7 +1,7 @@
 from ....interfaces.Score import ScoreAPI
 from ....interfaces.Rubric import RubricAPI
 from ....interfaces.Assessment import AssessmentAPI, AssessmentModel, AnswerModel
-from ....types import ContentType, UUID, HTTPResponse, Any
+from ....types import ContentType, UUID, HTTPResponse, Any, SQLAlchemy
 from ....util.first_and_only import first_and_only
 from ....ioc import implements
 
@@ -9,7 +9,6 @@ from .model import Score
 from .views import kinds
 
 from injector import inject
-from .types import SQLAlchemy
 
 def answer_value(value: str):
   try:
@@ -17,7 +16,7 @@ def answer_value(value: str):
   except:
     return 1 if value != '' else 0
 
-# @implements(ScoreAPI)
+@implements(ScoreAPI)
 class FAIRshakeInsignia:
 
   @staticmethod
