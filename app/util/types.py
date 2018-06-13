@@ -27,3 +27,16 @@ class HTTPResponse(Generic[T]):
 Interface = NewType("Interface", Any)
 Implementation = NewType("Implementation", Any)
 Model = NewType("Model", Any)
+
+from injector import Key
+
+App = Key("App")
+API = Key("API")
+APISpec = Key("APISpec")
+FlaskApp = Key("FlaskApp")
+AppRunner = Key("AppRunner")
+ConnexionConfig = Key("ConnexionConfig")
+FlaskConfig = Key("FlaskConfig")
+FlaskRunConfig = Key("FlaskRunConfig")
+Modules = Key("Modules")
+SQLAlchemyEngine = Key("SQLAlchemyEngine")

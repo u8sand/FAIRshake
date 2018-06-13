@@ -34,5 +34,8 @@ def implements(iface):
         setattr(getattr(impl, attr), '__doc__', getattr(iface, attr).__doc__)
       except:
         pass
+    from injector import singleton
+    from .. import injector
+    injector.binder.bind(iface, to=impl, scope=singleton)
     return impl
   return implements_decorator
