@@ -1,6 +1,7 @@
-from ....ioc import implements
+from injector import Module, provider, singleton
+from ....ioc import injector, implements
 from ....interfaces.Assessment import AssessmentModel, AnswerModel
-from ....types import UUID, Optional, List, Timestamp
+from ....types import UUID, Optional, List, Timestamp, SQLAlchemyBase
 
 import sqlalchemy as db
 from sqlalchemy.orm import relationship
@@ -9,19 +10,27 @@ from datetime import datetime
 
 Base = declarative_base()
 
-@implements(AnswerModel)
-class Answer(Base):
-  __tablename__ = 'assessment_answer'
-  assessment: db.Column('assessment', db.ForeignKey('assessment.id'), primary_key=True)
-  criterion: UUID = db.Column('criterion', db.String, primary_key=True)
-  value: str = db.Column('value', db.String)
-
 @implements(AssessmentModel)
 class Assessment(Base):
   __tablename__ = 'assessment'
-  id: UUID = db.Column('id', db.String, primary_key=True)
-  object: UUID = db.Column('object', db.String)
-  user: UUID = db.Column('user', db.String)
-  rubric: UUID = db.Column('rubric', db.String)
-  timestamp: Optional[Timestamp] = db.Column('timestamp', db.DateTime, onupdate=datetime.now)
-  answers: List[AnswerModel] = relationship(Answer)
+  id: UUID = db.Column(db.String, primary_key=True)
+  object: UUID = db.Column(db.String)
+  user: UUID = db.Column(db.String)
+  rubric: UUID = db.Column(db.String)
+  timestamp: Optional[Timestamp] = db.Column(db.DateTime, onupdate=datetime.now)
+  answers: List[AnswerModel] = relationship('Answer')
+
+@implements(AnswerModel)
+class Answer(Base):
+  __tablename__ = 'assessment_answer'
+  assessment: UUID = db.Column(db.String, db.ForeignKey('assessment.id'), primary_key=True)
+  criterion: UUID = db.Column(db.String, primary_key=True)
+  value: str = db.Column(db.String)
+
+
+@injector.binder.install
+class RepositorySQLAlchemyBaseModule(Module):
+  @provider
+  @singleton
+  def provide_SQLAlchemyBase(self) -> SQLAlchemyBase:
+    return [Base]

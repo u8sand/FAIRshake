@@ -2,7 +2,7 @@ from ...interfaces.Assessment import AssessmentAPI, AssessmentModel, AnswerModel
 from ...types import HTTPResponse, UUID, Timestamp, Optional, List
 from ...ioc import implements
 
-@implements(AssessmentAPI)
+# @implements(AssessmentAPI)
 class MockAssessmentAPI:
 
   @staticmethod

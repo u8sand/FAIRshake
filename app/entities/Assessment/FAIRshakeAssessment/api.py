@@ -4,7 +4,7 @@ from ....interfaces.Assessment import AssessmentAPI, AssessmentModel
 from ....types import ContentType, UUID, HTTPResponse, Any, SQLAlchemy, Optional, Timestamp, List
 from ....util.first_and_only import first_and_only
 from ....util.filter_none_kwargs import filter_none_kwargs
-from ....ioc import implements
+from ....ioc import injector, implements
 
 from .model import Assessment
 
@@ -13,15 +13,15 @@ class FAIRshakeAssessment:
 
   @staticmethod
   def get(
-      db: SQLAlchemy,
       id: Optional[UUID] = None,
       user: Optional[UUID] = None,
       object: Optional[UUID] = None,
       rubric: Optional[UUID] = None,
-      timestamp: Optional[Timestamp] = None,
+      timestamp: Optional[Timestamp] = '2000-01-01',
       skip: Optional[int] = None,
       limit: Optional[int] = None,
     ) -> HTTPResponse[List[AssessmentModel]]:
+    db = injector.get(SQLAlchemy)() # TODO: inject via args
     return db.query(Assessment).filter_by(
       **filter_none_kwargs(
         id=id,
@@ -29,13 +29,12 @@ class FAIRshakeAssessment:
         object=object,
         rubric=rubric,
       )
-    ) \
-    .filter(Assessment.timestamp >= timestamp) \
-    .slice(
+    ).filter(
+      Assessment.timestamp >= timestamp
+    ).slice(
       skip,
       limit,
-    ) \
-    .all()
+    ).all()
 
   @staticmethod
   def post(
