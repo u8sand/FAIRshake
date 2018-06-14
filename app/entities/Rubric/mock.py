@@ -2,7 +2,7 @@ from ...interfaces.Rubric import RubricAPI, RubricModel, CriterionModel
 from ...types import HTTPResponse, UUID, Timestamp, Optional, List
 from ...ioc import implements
 
-@implements(RubricAPI)
+# @implements(RubricAPI)
 class MockRubricAPI:
 
   @staticmethod
