@@ -2,7 +2,7 @@ from ...interfaces.Repository import RepositoryAPI, DigitalObjectModel
 from ...types import HTTPResponse, List, Optional, Timestamp, UUID
 from ...ioc import implements
 
-@implements(RepositoryAPI)
+# @implements(RepositoryAPI)
 class MockRepositoryAPI:
 
   @staticmethod

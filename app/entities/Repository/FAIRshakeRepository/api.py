@@ -4,25 +4,26 @@ from ....interfaces.Repository import RepositoryAPI, DigitalObjectModel
 from ....types import ContentType, UUID, HTTPResponse, Any, SQLAlchemy, Optional, List, Timestamp
 from ....util.first_and_only import first_and_only
 from ....util.filter_none_kwargs import filter_none_kwargs
-from ....ioc import implements
+from ....ioc import injector, implements
 
-from .model import DigitalObject
+from .model import DigitalObject, DigitalObjectTags
 
 @implements(RepositoryAPI)
 class FAIRshakeRepository:
 
   @staticmethod
+  @inject
   def get(
-      db: SQLAlchemy,
       id: Optional[UUID] = None,
       tags: Optional[List[str]] = None,
       user: Optional[UUID] = None,
       name: Optional[str] = None,
       url: Optional[str] = None,
-      timestamp: Optional[Timestamp] = None,
+      timestamp: Optional[Timestamp] = '2000-01-01',
       skip: Optional[int] = None,
       limit: Optional[int] = None,
     ) -> HTTPResponse[List[DigitalObjectModel]]:
+    db = injector.get(SQLAlchemy)()
     return db.query(DigitalObject).filter_by(
       **filter_none_kwargs(
         id=id,
@@ -30,14 +31,14 @@ class FAIRshakeRepository:
         name=name,
         url=url,
       )
-    ) \
-    .filter(DigitalObject.timestamp >= timestamp) \
-    .filter_by(DigitalObject.tags.in_(tags)) \
-    .slice(
+    ).filter(
+      DigitalObject.timestamp >= timestamp
+    ).join(
+      DigitalObjectTags
+    ).slice(
       skip,
       limit,
-    ) \
-    .all()
+    ).all()
 
   @staticmethod
   def post(

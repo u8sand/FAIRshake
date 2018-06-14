@@ -1,6 +1,7 @@
-from ....ioc import implements
+from injector import Module, provider, singleton
+from ....ioc import injector, implements
 from ....interfaces.Repository import DigitalObjectModel
-from ....types import UUID, Optional, List, Timestamp
+from ....types import UUID, Optional, List, Timestamp, SQLAlchemyBase
 
 import sqlalchemy as db
 from sqlalchemy.orm import relationship
@@ -11,7 +12,7 @@ Base = declarative_base()
 
 class DigitalObjectTags(Base):
   __tablename__ = 'digital_object_tags'
-  object = db.Column('object', db.ForeignKey('digital_object.id'), primary_key=True)
+  object: UUID = db.Column('object', db.ForeignKey('digital_object.id'), primary_key=True)
   tag: str = db.Column('tag', db.String, primary_key=True)
 
 @implements(DigitalObjectModel)
@@ -26,3 +27,10 @@ class DigitalObject(Base):
   image: Optional[str] = db.Column('image', db.String)
   tags: Optional[List[str]] = relationship(DigitalObjectTags)
   timestamp: Optional[Timestamp] = db.Column('timestamp', db.DateTime, onupdate=datetime.now)
+
+@injector.binder.install
+class RepositorySQLAlchemyBaseModule(Module):
+  @provider
+  @singleton
+  def provide_SQLAlchemyBase(self) -> SQLAlchemyBase:
+    return [Base]
