@@ -79,9 +79,12 @@ paths:
         name: id
         type: string
       - description: Unique user identifier
-        format: uuid
         in: query
         name: user
+      - description: Unique digital object identifier
+        format: uuid
+        in: query
+        name: object
         type: string
       - description: Updated at least since timestamp
         format: dateTime

@@ -10,7 +10,7 @@ definitions:
         example: d290f1ee-6c54-4b01-90e6-d701748f0851
         format: uuid
         type: string
-      obj:
+      object:
         description: Digital object identifier
         example: d290f1ee-6c54-4b01-90e6-d701748f0851
         format: uuid
@@ -40,7 +40,7 @@ paths:
       parameters:
       - description: Unique Digital Object Identifier
         in: query
-        name: id
+        name: object
         required: true
         type: string
       - description: Content type of the score we want (e.g. application/json or text/html)

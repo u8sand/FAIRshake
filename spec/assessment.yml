@@ -1,9 +1,9 @@
 definitions:
   Answer:
     properties:
-      name:
-        description: Answer being evaluated
-        example: Coolness
+      criterion:
+        description: Criterion id in rubric being evaluated
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
         type: string
       value:
         description: Value of the answer (of rubric-defined type)
@@ -19,6 +19,11 @@ definitions:
         type: array
       id:
         description: ID of evaluation
+        example: d290f1ee-6c54-4b01-90e6-d701748f0851
+        format: uuid
+        type: string
+      object:
+        description: ID of object evaluated
         example: d290f1ee-6c54-4b01-90e6-d701748f0851
         format: uuid
         type: string
