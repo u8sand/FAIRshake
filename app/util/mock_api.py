@@ -14,4 +14,4 @@ def MockAPISwagger(api):
   # Create stub with swagger spec
   swagger_stub([(spec, mock_url)])
   # Connect to stub with bravado
-  return SwaggerClient.from_(mock_url)
+  return SwaggerClient.from_url(mock_url)
