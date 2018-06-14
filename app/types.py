@@ -28,7 +28,7 @@ Interface = NewType("Interface", object)
 Implementation = NewType("Implementation", object)
 Model = NewType("Model", object)
 
-from injector import Key
+from injector import Key, SequenceKey
 
 App = Key("App")
 API = Key("API")
@@ -40,4 +40,6 @@ FlaskConfig = Key("FlaskConfig")
 FlaskRunConfig = Key("FlaskRunConfig")
 Modules = Key("Modules")
 SQLAlchemy = Key("SQLAlchemy")
+SQLAlchemyBase = SequenceKey("SQLAlchemyBase")
 SQLAlchemyEngine = Key("SQLAlchemyEngine")
+OAuth = Key("OAuth")
