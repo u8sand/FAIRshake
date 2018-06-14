@@ -6,8 +6,18 @@ from ...interfaces.Assessment import AssessmentAPI, AssessmentModel
 from ...interfaces.Rubric import RubricAPI
 from ...interfaces.Score import ScoreAPI
 from ...util.first_and_only import first_and_only, first
+from flask_oidc import OpenIDConnect
+
+import os
 
 app = Flask(__name__)
+app.secret_key = os.environ['SECRET_KEY']
+app.config.update({
+  'OIDC_CLIENT_SECRETS': os.environ['OIDC_CLIENT_SECRETS'],
+  'OIDC_SCOPES': ['openid', 'sub', 'name', 'email'],
+  'SESSION_TYPE': 'filesystem',
+})
+oidc = OpenIDConnect(app)
 
 current_user = {'id': '1'}
 
@@ -26,50 +36,59 @@ def get_project_id(repository: DigitalObjectModel):
     )
   ).group('id')
 
+def current_user():
+  return {
+    'id': oidc.user_getfield('sub') if oidc.user_loggedin else None,
+    'name': oidc.user_getfield('name') if oidc.user_loggedin else '',
+    'email': oidc.user_getfield('email') if oidc.user_loggedin else '',
+    'is_authenticated': oidc.user_loggedin,
+  }
+
 @app.route('/', methods=['GET'])
 def index(repository: RepositoryAPI):
   ''' FAIRshakeHub Home Page
   '''
   return render_template('index.html',
     top_projects=repository.get(limit=4),
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/projects', methods=['GET'])
 def projects(repository: RepositoryAPI):
   return render_template('projects.html',
     projects=repository.get(tags=['project']),
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/start_project', methods=['GET'])
 def start_project():
   return render_template('start_project.html',
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/chrome_extension', methods=['GET'])
 def chrome_extension():
   return render_template('chrome_extension.html',
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/bookmarklet', methods=['GET'])
 def bookmarklet():
   return render_template('bookmarklet.html',
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/login', methods=['GET'])
+@oidc.require_login
 def login():
   return render_template('login.html',
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/register', methods=['GET'])
 def register():
   return render_template('register.html',
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/project/<int:project>/resources', methods=['GET'])
@@ -93,7 +112,7 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
     aggregate_scores=aggregate_scores,
     assessment_count=assessment_count,
     current_user_assessed_resources=current_user_assessed_resources,
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/project/<int:project>/my_evaluations', methods=['GET'])
@@ -120,7 +139,7 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     current_user_scores=current_user_scores,
     assessment_count=assessment_count,
     current_user_assessed_resources=current_user_assessed_resources,
-    current_user={},
+    current_user=current_user(),
   )
 
 @app.route('/evaluation', methods=['GET', 'POST'])
@@ -132,7 +151,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
       rubrics=rubric.get(),
       rubric_ids=[rubric.id for rubric in rubric.get()],
       current_user_assessment=assessment.get(object=resource_id, user=current_user['id']),
-      current_user={},
+      current_user=current_user(),
     )
   else:
     resource_id=request.form.get('resource_id')
@@ -177,9 +196,10 @@ def evaluated_projects(repository: RepositoryAPI, assessment: AssessmentAPI):
   ]
   return render_template('evaluated_projects.html',
     evaluated_projects=evaluated_projects,
-    current_user={},
+    current_user=current_user(),
   )
 
-# @app.route('/logout', methods=['GET'])
-# def logout():
-#   return redirect('/login')
+@app.route('/logout', methods=['GET'])
+def logout():
+  oidc.logout()
+  return ''

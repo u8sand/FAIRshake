@@ -25,5 +25,6 @@ class ConfigureModule(Module):
       host='0.0.0.0',
       port=8080,
       debug=True,
-      threaded=True
+      threaded=True,
+      ssl_context='adhoc',
     )
