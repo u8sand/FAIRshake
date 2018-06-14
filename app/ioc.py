@@ -43,10 +43,8 @@ def implements(iface):
       assert impl_attr is not None, '%s does not implement %s.%s' % (impl.__name__, iface.__name__, attr)
 
       if callable(impl_attr):
-        assert annotation_subset(iface_attr, impl_attr), '%s does not implement %s.%s\n%s != %s' % (
+        assert annotation_subset(iface_attr, impl_attr), '%s does not implement %s.%s' % (
           impl.__name__, iface.__name__, attr,
-          annotations_to_str(func_to_annotations(impl_attr_annotations)),
-          annotations_to_str(func_to_annotations(impl_attr_annotations_with_iface_attr_annotations)),
         )
 
         try:
