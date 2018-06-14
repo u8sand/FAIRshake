@@ -2,7 +2,7 @@ from ...interfaces.Score import ScoreAPI, ScoreModel
 from ...types import Any, UUID, Timestamp, ContentType, HTTPResponse, Optional
 from ...ioc import implements
 
-@implements(ScoreAPI)
+# @implements(ScoreAPI)
 class MockScoreAPI:
 
   @staticmethod
