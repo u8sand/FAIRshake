@@ -21,9 +21,8 @@
         {% for rubric in rubrics %}
             {% with assessment=(current_user_assessment|selectattr("rubric","equalto",rubric.id)|list)[0] if current_user_assessment else {} %}
                 <fieldset class="form-group"><legend>{{ rubric.name }}</legend>
-                    {% set group_index = loop.index %}
                     {% for criterion in rubric.criteria %}
-                        {% with answer=(assessment.criteria|selectattr("id","equalto",criterion.id)|list)[0] if assessment else {} %}
+                        {% with answer=(assessment.answers|selectattr("id","equalto",criterion.id)|list)[0] if assessment else {} %}
                             {% include "/question_kinds/" + criterion.kind + ".html" %}
                         {% endwith %}
                     {% endfor %}
