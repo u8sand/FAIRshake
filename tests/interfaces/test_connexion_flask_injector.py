@@ -8,6 +8,7 @@ from app.util.module_resolver import ModuleResolver
 
 GoodStatus = Key("GoodStatus")
 Test = Key("Test")
+FlaskAppClient = Key("FlaskAppClient")
 
 class SomeInterface:
   def echo(s: str) -> str:
@@ -84,13 +85,19 @@ class GoodStatusModule(Module):
 class FlaskInjectorModule(Module):
   @provider
   @singleton
+  @inject
   def provide_flask_injected(self, api: TestAPIInterface, injector: Injector) -> FlaskApp:
     spec = generate_spec(TestAPIInterface)
     flask_app = FlaskApp(api.__name__)
     flask_app.add_api(spec, resolver=ModuleResolver(api))
     FlaskInjector(app=flask_app.app, injector=injector)
-    return flask_app
+    return flask_app.app
 
+  @provider
+  @singleton
+  @inject
+  def provide_flask_test_client(self, flask_app: FlaskApp) -> FlaskAppClient:
+    return flask_app.test_client()
 
 def test_connexion_inject():
   injector = Injector()
@@ -99,8 +106,7 @@ def test_connexion_inject():
   injector.binder.install(GoodStatusModule)
   injector.binder.install(FlaskInjectorModule)
 
-  flask_app = injector.get(FlaskApp)
-  with flask_app.app.test_client() as client:
+  with injector.get(FlaskAppClient) as client:
     response = client.get('/?a=test')
     assert response.status_code == 200, response.status_code
     data = json.loads(response.data.decode())
