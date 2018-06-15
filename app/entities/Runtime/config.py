@@ -38,7 +38,7 @@ class ConfigureModule(Module):
       flask_session_type='filesystem',
       oidc_secrets='client_secrets.json',
       oidc_scopes=['openid', 'email'],
-      sqlalchemy_uri='sqlite3:///FAIRshake.db',
+      sqlalchemy_uri='sqlite:///FAIRshake.db',
     )
 
   @provider
