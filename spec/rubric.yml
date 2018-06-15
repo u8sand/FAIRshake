@@ -14,7 +14,6 @@ definitions:
         example: Coolness
         type: string
     required:
-    - id
     - user
     - name
     type: object
@@ -54,7 +53,6 @@ definitions:
         format: uuid
         type: string
     required:
-    - id
     - user
     - name
     type: object
