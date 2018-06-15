@@ -2,6 +2,7 @@ from injector import Module, provider, singleton
 from ....ioc import injector, implements
 from ....interfaces.Repository import DigitalObjectModel
 from ....types import UUID, Optional, List, Timestamp, SQLAlchemyBase
+from ....util.generate_uuid import generate_uuid
 
 import sqlalchemy as db
 from sqlalchemy.orm import relationship
@@ -18,7 +19,7 @@ class DigitalObjectTags(Base):
 @implements(DigitalObjectModel)
 class DigitalObject(Base):
   __tablename__ = 'digital_object'
-  id: UUID = db.Column('id', db.String, primary_key=True)
+  id: UUID = db.Column('id', db.String, primary_key=True, default=generate_uuid)
   url: str = db.Column('url', db.String, primary_key=True)
   user: Optional[UUID] = db.Column('user', db.String)
   name: Optional[str] = db.Column('name', db.String)

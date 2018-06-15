@@ -3,6 +3,7 @@ from ....ioc import injector, implements
 from ....interfaces.Rubric import RubricModel, CriterionModel
 from ....interfaces.Repository import DigitalObjectModel
 from ....types import UUID, Optional, List, Timestamp, SQLAlchemyBase
+from ....util.generate_uuid import generate_uuid
 
 import sqlalchemy as db
 from sqlalchemy.orm import relationship
@@ -14,7 +15,7 @@ Base = declarative_base()
 @implements(RubricModel)
 class Rubric(Base):
   __tablename__ = 'rubric'
-  id: UUID = db.Column('id', db.String, primary_key=True)
+  id: UUID = db.Column('id', db.String, primary_key=True, default=generate_uuid)
   user: UUID = db.Column('user', db.String)
   name: str = db.Column('name', db.String)
   criteria: List[CriterionModel] = relationship('Criterion')

@@ -7,7 +7,6 @@ class DigitalObjectModel:
   '''
   type: object
   required:
-  - id
   - url
   properties:
     id:

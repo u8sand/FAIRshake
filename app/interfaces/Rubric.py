@@ -7,7 +7,6 @@ class CriterionModel:
   '''
   type: object
   required:
-  - id
   - user
   - name
   properties:
@@ -34,7 +33,6 @@ class RubricModel:
   type: object
   description: An rubric for evaluating a digital object
   required:
-  - id
   - user
   - name
   properties:
