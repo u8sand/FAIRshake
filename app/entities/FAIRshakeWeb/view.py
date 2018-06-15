@@ -1,28 +1,25 @@
 import re
 import json
+from injector import singleton
 from flask import Flask, render_template, request, redirect
+from flask_oidc import OpenIDConnect
 from ...interfaces.Repository import RepositoryAPI, DigitalObjectModel
 from ...interfaces.Assessment import AssessmentAPI, AssessmentModel
 from ...interfaces.Rubric import RubricAPI
 from ...interfaces.Score import ScoreAPI
 from ...util.first_and_only import first_and_only, first
-from flask_oidc import OpenIDConnect
+from ...ioc import injector
+from ...types import FlaskApp, OIDC
 
 import os
 
 app = Flask(__name__)
-app.secret_key = os.environ['SECRET_KEY']
-app.config.update({
-  'OIDC_CLIENT_SECRETS': os.environ['OIDC_CLIENT_SECRETS'],
-  'OIDC_SCOPES': ['openid', 'sub', 'name', 'email'],
-  'SESSION_TYPE': 'filesystem',
-})
-oidc = OpenIDConnect(app)
+injector.binder.bind(FlaskApp, to=app, scope=singleton)
 
-current_user = {'id': '1'}
+oidc = OpenIDConnect()
+injector.binder.bind(OIDC, to=oidc, scope=singleton)
 
 project_id_tag_re = re.compile(r'^project:(?P<id>\d+)$')
-
 def get_project_id(repository: DigitalObjectModel):
   ''' Figure out the project this resource is related to.
   '''
@@ -37,12 +34,10 @@ def get_project_id(repository: DigitalObjectModel):
   ).group('id')
 
 def current_user():
-  return {
-    'id': oidc.user_getfield('sub') if oidc.user_loggedin else None,
-    'name': oidc.user_getfield('name') if oidc.user_loggedin else '',
-    'email': oidc.user_getfield('email') if oidc.user_loggedin else '',
-    'is_authenticated': oidc.user_loggedin,
-  }
+  return dict(
+    oidc.user_getinfo(['sub', 'name', 'email']) if oidc.user_loggedin else {},
+    is_authenticated=oidc.user_loggedin,
+  )
 
 @app.route('/', methods=['GET'])
 def index(repository: RepositoryAPI):
@@ -78,13 +73,6 @@ def bookmarklet():
     current_user=current_user(),
   )
 
-@app.route('/login', methods=['GET'])
-@oidc.require_login
-def login():
-  return render_template('login.html',
-    current_user=current_user(),
-  )
-
 @app.route('/register', methods=['GET'])
 def register():
   return render_template('register.html',
@@ -96,7 +84,7 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
   resources=repository.get(tags=['project:{:d}'.format(project)])
   current_user_assessed_resources = [
     resource.id for resource in resources
-    if assessment.get(object=resource.id, user=current_user['id']) != []
+    if assessment.get(object=resource.id, user=current_user()['sub']) != []
   ]
   assessment_count = {
     resource.id: len(assessment.get(object=resource.id))
@@ -119,7 +107,7 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
 def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: ScoreAPI, project):
   current_user_assessed_resources = [
     resource for resource in repository.get(tags=['project:{:d}'.format(project)])
-    if assessment.get(object=resource.id, user=current_user['id']) != []
+    if assessment.get(object=resource.id, user=current_user()['sub']) != []
   ]
   assessment_count = {
     resource.id: len(assessment.get(object=resource.id))
@@ -130,7 +118,7 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     for resource in current_user_assessed_resources
   }
   current_user_scores = {
-    resource.id: score.get(object=resource.id, user=current_user['id'], kind='text/html')
+    resource.id: score.get(object=resource.id, user=current_user()['sub'], kind='text/html')
     for resource in current_user_assessed_resources
   }
   return render_template('project_evaluated_resources.html',
@@ -150,7 +138,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
       resource=first(repository.get(id=resource_id, limit=1)),
       rubrics=rubric.get(),
       rubric_ids=[rubric.id for rubric in rubric.get()],
-      current_user_assessment=assessment.get(object=resource_id, user=current_user['id']),
+      current_user_assessment=assessment.get(object=resource_id, user=current_user()['sub']),
       current_user=current_user(),
     )
   else:
@@ -168,7 +156,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
       assessment.post(
         AssessmentModel(
           object=resource_id,
-          user=current_user['id'],
+          user=current_user()['sub'],
           rubric=rubric.id,
           answers=answers,
         )
@@ -188,7 +176,7 @@ def evaluated_projects(repository: RepositoryAPI, assessment: AssessmentAPI):
         )
       )
     ).id
-    for assessment_each in assessment.get(user=current_user['id'])
+    for assessment_each in assessment.get(user=current_user()['sub'])
   }
   evaluated_projects = [
     first(repository.get(id=id_each))
@@ -199,7 +187,12 @@ def evaluated_projects(repository: RepositoryAPI, assessment: AssessmentAPI):
     current_user=current_user(),
   )
 
+@app.route('/login', methods=['GET'])
+@oidc.require_login
+def login():
+  return redirect('/', code=302)
+
 @app.route('/logout', methods=['GET'])
 def logout():
   oidc.logout()
-  return ''
+  return redirect('/', code=302)

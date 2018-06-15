@@ -1,6 +1,6 @@
-def filter_none_kwargs(**kwargs):
+def filter_none_kwargs(__={}, **kwargs):
   return {
     k: v
-    for k, v in kwargs.items()
+    for k, v in dict(__, **kwargs).items()
     if v is not None
   }

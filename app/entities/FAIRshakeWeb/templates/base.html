@@ -48,14 +48,14 @@
                     <li{% if active_page == "login" %} class="active"{% endif %}>
                         <a href="/login" class="headx">Login</a>
                     </li>
-                    <li{% if active_page == "register" %} class="active"{% endif %}>
+                    <!-- <li{% if active_page == "register" %} class="active"{% endif %}>
                         <a href="/register" class="headx">Sign up</a>
-                    </li>
+                    </li> -->
                 {% else %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle headx" data-toggle="dropdown" role="button"
                             aria-haspopup="true"
-                            aria-expanded="false">{{ current_user.name }}</a>
+                            aria-expanded="false">{{ current_user.email }} ({{ current_user.sub }})</a>
                         <ul class="dropdown-menu">
                             <li>
                                 <a href="/evaluated_projects">Evaluated Projects</a>
