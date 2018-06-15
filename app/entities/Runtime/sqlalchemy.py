@@ -1,5 +1,5 @@
 from injector import Module, Key, provider, singleton, inject
-from ...types import SQLAlchemy, SQLAlchemyBase
+from ...types import Config, SQLAlchemy, SQLAlchemyBase
 from ...ioc import injector
 
 SQLAlchemyEngine = Key("SQLAlchemyEngine")
