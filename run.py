@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
 from app.ioc import injector
-from app.types import AppRunner
+from app.types import App
 
-injector.get(AppRunner)()
+injector.get(App).run()

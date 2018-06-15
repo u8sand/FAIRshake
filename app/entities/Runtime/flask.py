@@ -1,6 +1,6 @@
 from injector import Injector, Module, provider, singleton, inject
 from flask_injector import FlaskInjector
-from ...types import App, AppRunner, FlaskApp, API, APISpec, Config, OIDC
+from ...types import Apps, FlaskApp, API, APISpec, Config, OIDC
 from ...ioc import injector
 from ...util.filter_none_kwargs import filter_none_kwargs
 
@@ -24,7 +24,7 @@ class FlaskAppModule(Module):
   @provider
   @singleton
   @inject
-  def provide_flask_app(self, flask_app: FlaskApp, oidc: OIDC, config: Config, injector: Injector) -> App:
+  def provide_flask_app(self, flask_app: FlaskApp, oidc: OIDC, config: Config, injector: Injector) -> Apps:
     # Configure
     flask_app.secret_key = config['flask_secret_key']
     flask_app.config.update(filter_none_kwargs(**{
@@ -40,20 +40,14 @@ class FlaskAppModule(Module):
     # Attach injector
     FlaskInjector(app=flask_app, injector=injector)
 
-    return flask_app
-
-@injector.binder.install
-class FlaskAppRunner(Module):
-  @singleton
-  @provider
-  @inject
-  def provide_app_runner(self, app: App, config: Config) -> AppRunner:
+    # Override app.run arguments
     from ...util.bind import bind
-    # TODO: make App a MappingKey and use command-line[0]
-    return bind(app.run, **filter_none_kwargs(
+    flask_app.run = bind(flask_app.run, **filter_none_kwargs(
       host=config['host'],
       port=config['port'],
       debug=config['debug'],
       threaded=config['threaded'],
       ssl_context='adhoc' if config['https'] else None,
     ))
+
+    return {flask_app.name: flask_app}

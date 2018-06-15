@@ -28,12 +28,12 @@ Interface = NewType("Interface", object)
 Implementation = NewType("Implementation", object)
 Model = NewType("Model", object)
 
-from injector import Key, SequenceKey
+from injector import Key, MappingKey, SequenceKey
 
 API = Key("API")
 APISpec = Key("APISpec")
 App = Key("App")
-AppRunner = Key("AppRunner")
+Apps = MappingKey("Apps")
 Config = Key("Config")
 FlaskApp = Key("FlaskApp")
 OIDC = Key("OIDC")

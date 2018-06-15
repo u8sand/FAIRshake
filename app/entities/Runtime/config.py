@@ -20,7 +20,7 @@ class ConfigureModule(Module):
   def provide_cmdline(self) -> CommandLine:
     import sys
     from ...util.command_line_parse import parse
-    return parse(sys.argv[1:])
+    return parse(sys.argv)
 
   @provider
   @singleton
@@ -28,7 +28,7 @@ class ConfigureModule(Module):
     import os
     from binascii import hexlify
     return dict(
-      module='FAIRshakeWeb',
+      module='app.entities.FAIRshakeWeb.view',
       debug=True,
       host='0.0.0.0',
       port=8080,
@@ -45,7 +45,8 @@ class ConfigureModule(Module):
   @singleton
   @inject
   def provide_config(self, cmd: CommandLine, environ: Environment, defaults: Defaults) -> Config:
+    kargs, kwargs = cmd
     return filter_none_kwargs({
-      k: cmd[1].get(k, environ.get(k, v))
+      k: kwargs.get(k, environ.get(k, v))
       for k, v in defaults.items()
-    }, module=cmd[0])
+    }, module=kargs[1] if len(kargs) > 1 else None)

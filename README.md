@@ -20,7 +20,7 @@ Install dependencies with `pip install -r requirements.txt`.
 `python run.py`
 
 ### Generate pure swagger spec from interfaces
-`python dump.py`
+`python run.py dump`
 
 ### Run Application Tests
 `nosetests`
