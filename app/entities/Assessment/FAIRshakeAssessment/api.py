@@ -42,4 +42,6 @@ class FAIRshakeAssessment:
     ) -> HTTPResponse[None]:
     # TODO: check authentication
     # TODO: assert that assessment follows rubrics for the object
-    Assessment(body).save()
+    db = injector.get(SQLAlchemy)() # TODO: inject via args
+    db.add(Assessment(body))
+    db.commit()

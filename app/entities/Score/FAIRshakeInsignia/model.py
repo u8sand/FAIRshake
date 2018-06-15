@@ -16,7 +16,7 @@ class Score(Base):
   criterion: UUID = db.Column('criterion', db.String, primary_key=True)
   average: float = db.Column('average', db.Float)
   count: int = db.Column('count', db.Integer)
-  timestamp: Timestamp = db.Column('timestamp', db.DateTime, onupdate=datetime.now)
+  timestamp: Timestamp = db.Column('timestamp', db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 @injector.binder.install
 class ScoreSQLAlchemyBaseModule(Module):

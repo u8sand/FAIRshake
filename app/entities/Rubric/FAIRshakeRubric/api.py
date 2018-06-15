@@ -42,4 +42,6 @@ class FAIRshakeRubric:
       body: RubricModel
     ) -> HTTPResponse[None]:
     # TODO: check authentication
-    Rubric(body).save()
+    db = injector.get(SQLAlchemy)() # TODO: inject via args
+    db.add(Rubric(body))
+    db.commit()

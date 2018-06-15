@@ -2,6 +2,7 @@ from injector import Module, provider, singleton
 from ....ioc import injector, implements
 from ....interfaces.Assessment import AssessmentModel, AnswerModel
 from ....types import UUID, Optional, List, Timestamp, SQLAlchemyBase
+from ....util.generate_uuid import generate_uuid
 
 import sqlalchemy as db
 from sqlalchemy.orm import relationship
@@ -13,11 +14,11 @@ Base = declarative_base()
 @implements(AssessmentModel)
 class Assessment(Base):
   __tablename__ = 'assessment'
-  id: UUID = db.Column(db.String, primary_key=True)
+  id: UUID = db.Column(db.String, primary_key=True, default=generate_uuid)
   object: UUID = db.Column(db.String)
   user: UUID = db.Column(db.String)
   rubric: UUID = db.Column(db.String)
-  timestamp: Optional[Timestamp] = db.Column(db.DateTime, onupdate=datetime.now)
+  timestamp: Optional[Timestamp] = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
   answers: List[AnswerModel] = relationship('Answer')
 
 @implements(AnswerModel)

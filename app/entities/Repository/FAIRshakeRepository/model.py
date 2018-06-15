@@ -27,7 +27,7 @@ class DigitalObject(Base):
   description: Optional[str] = db.Column('description', db.String)
   image: Optional[str] = db.Column('image', db.String)
   tags: Optional[List[str]] = relationship(DigitalObjectTags)
-  timestamp: Optional[Timestamp] = db.Column('timestamp', db.DateTime, onupdate=datetime.now)
+  timestamp: Optional[Timestamp] = db.Column('timestamp', db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 @injector.binder.install
 class RepositorySQLAlchemyBaseModule(Module):

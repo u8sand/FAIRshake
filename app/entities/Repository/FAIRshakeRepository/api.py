@@ -45,4 +45,6 @@ class FAIRshakeRepository:
       body: DigitalObjectModel
     ) -> HTTPResponse[None]:
     # TODO: check authentication
-    DigitalObject(body).save()
+    db = injector.get(SQLAlchemy)() # TODO: inject via args
+    db.add(DigitalObject(body))
+    db.commit()

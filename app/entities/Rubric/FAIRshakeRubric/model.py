@@ -21,7 +21,7 @@ class Rubric(Base):
   criteria: List[CriterionModel] = relationship('Criterion')
   description: str = db.Column('description', db.String)
   tags: List[str] = relationship('RubricTags')
-  timestamp: Timestamp = db.Column('timestamp', db.DateTime, onupdate=datetime.now)
+  timestamp: Timestamp = db.Column('timestamp', db.DateTime, default=datetime.now, onupdate=datetime.now)
   objects: List[DigitalObjectModel] = relationship('RubricObjects')
 
 class RubricObjects(Base):
@@ -38,7 +38,7 @@ class RubricTags(Base):
 class Criterion(Base):
   __tablename__ = 'criterion'
   rubric: UUID = db.Column('rubric', db.String, db.ForeignKey('rubric.id'), primary_key=True)
-  id: UUID = db.Column('id', db.String, primary_key=True)
+  id: UUID = db.Column('id', db.String, primary_key=True, default=generate_uuid)
   name: str = db.Column('name', db.String)
   kind: str = db.Column('kind', db.String)
 
