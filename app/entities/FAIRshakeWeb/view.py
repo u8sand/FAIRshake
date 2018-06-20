@@ -79,9 +79,9 @@ def register():
     current_user=current_user(),
   )
 
-@app.route('/project/<int:project>/resources', methods=['GET'])
+@app.route('/project/<string:project>/resources', methods=['GET'])
 def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: ScoreAPI, project):
-  resources=repository.get(tags=['project:{:d}'.format(project)])
+  resources=repository.get(tags=['project:{:s}'.format(project)])
   current_user_assessed_resources = [
     resource.id for resource in resources
     if assessment.get(object=resource.id, user=current_user()['sub']) != []
@@ -95,7 +95,7 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
     for resource in resources
   }
   return render_template('project_resources.html',
-    project=first(repository.get(id='{:d}'.format(project), limit=1)),
+    project=first(repository.get(id='{:s}'.format(project), limit=1)),
     resources=resources,
     aggregate_scores=aggregate_scores,
     assessment_count=assessment_count,
@@ -103,10 +103,10 @@ def resources(repository: RepositoryAPI, assessment: AssessmentAPI, score: Score
     current_user=current_user(),
   )
 
-@app.route('/project/<int:project>/my_evaluations', methods=['GET'])
+@app.route('/project/<string:project>/my_evaluations', methods=['GET'])
 def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: ScoreAPI, project):
   current_user_assessed_resources = [
-    resource for resource in repository.get(tags=['project:{:d}'.format(project)])
+    resource for resource in repository.get(tags=['project:{:s}'.format(project)])
     if assessment.get(object=resource.id, user=current_user()['sub']) != []
   ]
   assessment_count = {
@@ -122,7 +122,7 @@ def my_evaluations(repository: RepositoryAPI, assessment: AssessmentAPI, score: 
     for resource in current_user_assessed_resources
   }
   return render_template('project_evaluated_resources.html',
-    project=first(repository.get(id='{:d}'.format(project), limit=1)),
+    project=first(repository.get(id='{:s}'.format(project), limit=1)),
     aggregate_scores=aggregate_scores,
     current_user_scores=current_user_scores,
     assessment_count=assessment_count,
@@ -162,7 +162,7 @@ def evaluation(repository: RepositoryAPI, rubric: RubricAPI, assessment: Assessm
         )
       )
     project = get_project_id(first(repository.get(resource_id)))
-    return redirect('/project/{:d}/resources'.format(project))
+    return redirect('/project/{:s}/resources'.format(project))
 
 @app.route('/evaluated_projects', methods=['GET'])
 def evaluated_projects(repository: RepositoryAPI, assessment: AssessmentAPI):
