@@ -36,7 +36,7 @@ class FAIRshakeRepository:
     ).join(
       DigitalObjectTags
     ).filter(
-      DigitalObjectTags.tag.in_(['project'])
+      DigitalObjectTags.tag.in_(tags or [])
     ).slice(
       skip,
       limit,
