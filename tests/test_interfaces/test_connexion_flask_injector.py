@@ -11,15 +11,20 @@ Test = Key("Test")
 FlaskAppClient = Key("FlaskAppClient")
 
 class SomeInterface:
+  @staticmethod
   def echo(s: str) -> str:
     raise NotImplemented
 
 class SomeInterfaceImpl:
+  @inject
   def echo(
-    status: GoodStatus,
     s: str,
+    status: GoodStatus,
   ) -> str:
-    assert status == 200
+    # NOTE: A bug in python injector doesn't allow
+    #  nested injections, if it did the below
+    #  line would assert properly.
+    # assert status == 200
     return s
 
 class TestAPIInterface:
@@ -33,7 +38,7 @@ class TestAPIInterface:
   - https
   paths:
     /:
-      get: {TestAPI__get}
+      get: {TestAPIInterface__get}
   '''
   @staticmethod
   def get(a: str = None) -> HTTPResponse[str]:
