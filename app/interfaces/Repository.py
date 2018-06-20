@@ -23,9 +23,6 @@ class DigitalObjectModel:
     name:
       type: string
       example: MyTool
-    license:
-      type: string
-      example: Apache-2.0
     description:
       type: string
       example: My tool is widely used.
@@ -47,7 +44,6 @@ class DigitalObjectModel:
   url: str
   user: Optional[UUID] = None
   name: Optional[str] = None
-  license: Optional[str] = None
   description: Optional[str] = None
   image: Optional[str] = None
   tags: Optional[List[str]] = None
