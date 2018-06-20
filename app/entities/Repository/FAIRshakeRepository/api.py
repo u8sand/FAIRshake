@@ -35,6 +35,8 @@ class FAIRshakeRepository:
       DigitalObject.timestamp >= timestamp
     ).join(
       DigitalObjectTags
+    ).filter(
+      DigitalObjectTags.tag.in_(['project'])
     ).slice(
       skip,
       limit,
