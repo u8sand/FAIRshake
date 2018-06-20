@@ -1,11 +1,7 @@
 from injector import Module, Key, provider, singleton, inject
 from ...util.filter_none_kwargs import filter_none_kwargs
-from ...types import Config
+from ...types import Config, Environment, CommandLine, Defaults
 from ...ioc import injector
-
-Environment = Key("Environment")
-CommandLine = Key("CommandLine")
-Defaults = Key("Defaults")
 
 @injector.binder.install
 class ConfigureModule(Module):
