@@ -19,7 +19,7 @@ class SomeInterfaceImpl:
   @inject
   def echo(
     s: str,
-    status: GoodStatus,
+    #status: GoodStatus,
   ) -> str:
     # NOTE: A bug in python injector doesn't allow
     #  nested injections, if it did the below
@@ -64,10 +64,14 @@ class TestAPI:
   @inject
   def get(
     impl: SomeInterface,
-    good_status: GoodStatus,
+    # good_status: GoodStatus,
     a: str = None
   ) -> HTTPResponse[str]:
-    return impl.echo(a), good_status
+    # NOTE: A bug in python injector doesn't allow
+    #  nested injections, if it did the below
+    #  line would assert properly.
+    # assert status == 200
+    return impl.echo(a), 200#good_status
 
 
 class ImplModule(Module):
