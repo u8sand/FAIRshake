@@ -7,7 +7,7 @@ from ....ioc import injector, implements
 
 from .model import Score
 from .views import kinds
-from sqlalchemy.sql import func
+from sqlalchemy.sql import func, ClauseElement
 
 from injector import inject
 
@@ -22,7 +22,7 @@ def get_or_create(session, model, defaults=None, **kwargs):
     if instance:
         return instance, False
     else:
-        params = dict((k, v) for k, v in kwargs.iteritems() if not isinstance(v, ClauseElement))
+        params = dict((k, v) for k, v in kwargs.items() if not isinstance(v, ClauseElement))
         params.update(defaults or {})
         instance = model(**params)
         session.add(instance)
@@ -41,9 +41,13 @@ class FAIRshakeInsignia:
     rubric_api = injector.get(RubricAPI)
     assessment_api = injector.get(AssessmentAPI)
 
-    timestamp = db.query(
-      func.min(Score.timestamp)
-    ).all()
+    timestamp = first_and_only(
+      first_and_only(
+        db.query(
+          func.min(Score.timestamp)
+        )
+      )
+    )
 
     # Update scores as required
     rubrics = rubric_api.get(object=object)
@@ -54,9 +58,9 @@ class FAIRshakeInsignia:
         for answer in assessment.answers:
           new_assessments_score_sums[answer.criterion] += new_assessments_score_sums.get(answer.criterion, 0) + answer_value(answer.value)
       for criterion in rubric.criteria:
-        score = get_or_create(db, Score, object=object, criterion=criterion.id)
-        score.average = score.average / score.count + new_assessments_score_sums[criterion.id] / len(new_assessments_score_sums[criterion.id])
-        # TODO: write to database
+        score, _ = get_or_create(db, Score, object=object, criterion=criterion.id)
+        score.average = (score.average / score.count) if score.count is not None else 0 + new_assessments_score_sums[criterion.id] / len(new_assessments_score_sums[criterion.id])
+        db.update(score)
     # Build visualization
     scores = db.query(Score).filter_by(object=object).all()
     return kinds.get(kind, kinds[''])(scores)
