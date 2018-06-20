@@ -1,4 +1,5 @@
 from injector import inject
+from datetime import datetime
 
 from ....interfaces.Assessment import AssessmentAPI, AssessmentModel
 from ....types import ContentType, UUID, HTTPResponse, Any, SQLAlchemy, Optional, Timestamp, List
@@ -17,7 +18,7 @@ class FAIRshakeAssessment:
       user: Optional[UUID] = None,
       object: Optional[UUID] = None,
       rubric: Optional[UUID] = None,
-      timestamp: Optional[Timestamp] = '2000-01-01',
+      timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
     ) -> HTTPResponse[List[AssessmentModel]]:
@@ -30,7 +31,9 @@ class FAIRshakeAssessment:
         rubric=rubric,
       )
     ).filter(
-      Assessment.timestamp >= timestamp
+      Assessment.timestamp >= (
+        timestamp if timestamp is not None else datetime.min
+      )
     ).slice(
       skip,
       limit,

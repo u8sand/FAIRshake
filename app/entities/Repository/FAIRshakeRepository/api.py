@@ -1,4 +1,5 @@
 from injector import inject
+from datetime import datetime
 
 from ....interfaces.Repository import RepositoryAPI, DigitalObjectModel
 from ....types import ContentType, UUID, HTTPResponse, Any, SQLAlchemy, Optional, List, Timestamp
@@ -19,7 +20,7 @@ class FAIRshakeRepository:
       user: Optional[UUID] = None,
       name: Optional[str] = None,
       url: Optional[str] = None,
-      timestamp: Optional[Timestamp] = '2000-01-01',
+      timestamp: Optional[Timestamp] = None,
       skip: Optional[int] = None,
       limit: Optional[int] = None,
     ) -> HTTPResponse[List[DigitalObjectModel]]:
@@ -32,7 +33,9 @@ class FAIRshakeRepository:
         url=url,
       )
     ).filter(
-      DigitalObject.timestamp >= timestamp
+      DigitalObject.timestamp >= (
+        timestamp if timestamp is not None else datetime.min
+      )
     ).join(
       DigitalObjectTags
     ).filter(
