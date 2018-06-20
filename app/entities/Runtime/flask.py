@@ -4,7 +4,7 @@ from ...types import Apps, FlaskApp, API, APISpec, Config, OIDC
 from ...ioc import injector
 from ...util.filter_none_kwargs import filter_none_kwargs
 
-@injector.binder.install
+# @injector.binder.install
 class ConnexionAppModule(Module):
   @provider
   @singleton
